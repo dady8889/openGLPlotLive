@@ -70,7 +70,7 @@ namespace GLPL {
         // Setup Buffers
         glBindVertexArray(vertsVAO);
         glBindBuffer(GL_ARRAY_BUFFER, vertsVBO);
-        glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(GLfloat), &verts[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(GLfloat), verts.data(), GL_STATIC_DRAW);
 
         // Position Attributes
         glEnableVertexAttribArray(0);
@@ -84,7 +84,7 @@ namespace GLPL {
         // Major Ticks
         glBindVertexArray(vertsVAO);
         glBindBuffer(GL_ARRAY_BUFFER, vertsVBO);
-        glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(verts[0]), &verts[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(verts[0]), verts.data(), GL_STATIC_DRAW);
         glBindVertexArray(0);
     }
 

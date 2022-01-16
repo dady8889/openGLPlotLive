@@ -640,14 +640,14 @@ namespace GLPL {
     std::string AxesLineTicks::value2NeatStr(double inValue, unsigned int maxCharSuggestion, double expSwapover,
                                              unsigned int minDecimal) {
         // Setup buffer
-        unsigned int maxLen = 20;
+        const unsigned int maxLen = 20;
         char textBuf[maxLen];
         std::string text;
 
         if ((fabs(inValue) < expSwapover && fabs(inValue) >= 1.0/pow(10,maxCharSuggestion - 2)) || fabs(inValue) < 1e-15) {
             // Calculate the number of digits before the decimal point in standard format
             int mainDigits;
-            if (fabs(inValue) > 1e-15 and fabs(inValue) >= 1) {
+            if (fabs(inValue) > 1e-15 && fabs(inValue) >= 1) {
                 mainDigits = std::ceil(fabs(std::log10(inValue)) + 1);
             } else {
                 mainDigits = 1;
@@ -659,8 +659,8 @@ namespace GLPL {
             }
 
             // Use standard format
-            const char *formatStr = ("%." + std::to_string(remainDigits) + "f").c_str();
-            sprintf(textBuf, formatStr, inValue);
+            std::string formatStr = "%." + std::to_string(remainDigits) + "f";
+            sprintf(textBuf, formatStr.c_str(), inValue);
             text = std::string(textBuf);
         } else {
             // Calculate length with zero decimals but with decimal point
@@ -676,8 +676,9 @@ namespace GLPL {
             if (numDecimals < (int)minDecimal) {
                 numDecimals = (int)minDecimal;
             }
-            const char *formatStr = ("%." + std::to_string(numDecimals) + "e").c_str();
-            snprintf(textBuf, maxLen, formatStr, inValue);
+
+            std::string formatStr = "%." + std::to_string(numDecimals) + "e";
+            snprintf(textBuf, maxLen, formatStr.c_str(), inValue);
 
             // Find exponent, skip non-digit chars
             char *exponent = strchr(textBuf, 'e') + 2;
@@ -796,7 +797,7 @@ namespace GLPL {
             // Create Text String
             std::string text = value2NeatStr(majorTickAxesPos[i], 4, 1000, 1);
             // Check that the label should not be the zero label
-            if ((axesDirection != X_AXES_CENTRE and axesDirection != Y_AXES_CENTRE) or text != "0.00") {
+            if ((axesDirection != X_AXES_CENTRE && axesDirection != Y_AXES_CENTRE) || text != "0.00") {
                 // Create text string
                 std::pair<float, float> labelPos = AxesLineTicks::generateTickLabelVerts(majorTickVerts[4 * i], majorTickVerts[4 * i + 1]);
                 // Check if a text string already exists
@@ -923,7 +924,7 @@ namespace GLPL {
         // Setup Buffers
         glBindVertexArray(axesLineVAO);
         glBindBuffer(GL_ARRAY_BUFFER, axesLineVBO);
-        glBufferData(GL_ARRAY_BUFFER, axesLineVerts.size() * sizeof(GLfloat), &axesLineVerts[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, axesLineVerts.size() * sizeof(GLfloat), axesLineVerts.data(), GL_STATIC_DRAW);
 
         // Position Attributes
         glEnableVertexAttribArray(0);
@@ -939,7 +940,7 @@ namespace GLPL {
         // Setup Buffers
         glBindVertexArray(majorTickVAO);
         glBindBuffer(GL_ARRAY_BUFFER, majorTickVBO);
-        glBufferData(GL_ARRAY_BUFFER, majorTickVerts.size()*sizeof(GLfloat),&majorTickVerts[0],GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, majorTickVerts.size()*sizeof(GLfloat),majorTickVerts.data(), GL_STATIC_DRAW);
 
         // Position Attributes
         glEnableVertexAttribArray(0);
@@ -955,7 +956,7 @@ namespace GLPL {
         // Setup Buffers
         glBindVertexArray(minorTickVAO);
         glBindBuffer(GL_ARRAY_BUFFER, minorTickVBO);
-        glBufferData(GL_ARRAY_BUFFER, minorTickVerts.size()*sizeof(GLfloat),&minorTickVerts[0],GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, minorTickVerts.size()*sizeof(GLfloat),minorTickVerts.data(), GL_STATIC_DRAW);
 
         // Position Attributes
         glEnableVertexAttribArray(0);
@@ -967,13 +968,15 @@ namespace GLPL {
     void AxesLineTicks::updateAxesLineBuffers() {
         // Axes Line
         glBindBuffer(GL_ARRAY_BUFFER, axesLineVBO);
-        glBufferData(GL_ARRAY_BUFFER, axesLineVerts.size()*sizeof(axesLineVerts[0]), &axesLineVerts[0], GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, axesLineVerts.size()*sizeof(axesLineVerts[0]), axesLineVerts.data(), GL_DYNAMIC_DRAW);
+        
         // Major Ticks
         glBindBuffer(GL_ARRAY_BUFFER, majorTickVBO);
-        glBufferData(GL_ARRAY_BUFFER, majorTickVerts.size()*sizeof(majorTickVerts[0]), &majorTickVerts[0], GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, majorTickVerts.size()*sizeof(majorTickVerts[0]), majorTickVerts.data(), GL_DYNAMIC_DRAW);
+        
         // Minor Ticks
         glBindBuffer(GL_ARRAY_BUFFER, minorTickVBO);
-        glBufferData(GL_ARRAY_BUFFER, minorTickVerts.size()*sizeof(minorTickVerts[0]), &minorTickVerts[0], GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, minorTickVerts.size()*sizeof(minorTickVerts[0]), minorTickVerts.data(), GL_DYNAMIC_DRAW);
     }
 
     void AxesLineTicks::drawAxesLine() {
@@ -1049,13 +1052,15 @@ namespace GLPL {
         // Calculate proportional log widths
         // Sum of widths = 1, no need to divide by the total width
         std::vector<float> logVals;
+
         // Calculate log values
         for(unsigned int i=1; i < 11; i++) {
             float logVal = std::log10(i);
             logVals.push_back(logVal);
         }
+
         // Calculate log widths
-        for(unsigned int i=1; i < 11; i++) {
+        for(unsigned int i=1; i < 10; i++) {
             float logWidth = logVals[i] - logVals[i-1];
             unsigned int xVal = i + 1;
             logWidths[xVal] = logWidth;

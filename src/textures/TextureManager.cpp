@@ -11,12 +11,10 @@
 
 // Standard Includes
 #include <iostream>
+#include <filesystem>
 
 // Project Includes
 #include "TextureManager.h"
-
-#include <unistd.h>
-#include <dirent.h>
 
 
 namespace GLPL {
@@ -70,16 +68,18 @@ namespace GLPL {
 
     std::vector<std::string> TextureManager::getFilesInDir() {
         std::vector<std::string> files;
-        DIR *dir = opendir("textures");
-        if (!dir) {
+        const std::string textureFolder = "textures";
+
+        if (!std::filesystem::exists(textureFolder))
+        {
             std::cout << "Texture directory does not exist!" << std::endl;
-        } else {
-            dirent *entry;
-            while ((entry = readdir(dir)) != nullptr)  {
-                files.emplace_back(entry->d_name);
-            }
+            return files;
         }
-        closedir(dir);
+
+        for (const auto& entry : std::filesystem::directory_iterator(textureFolder))
+        {
+            files.push_back(entry.path().filename().string());
+        }
 
         return files;
     }

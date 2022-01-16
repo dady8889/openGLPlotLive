@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <array>
 
 // GLAD - Multi Language GL Loader-Generator
 #include <glad/glad.h>

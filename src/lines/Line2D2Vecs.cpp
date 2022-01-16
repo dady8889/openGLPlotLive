@@ -19,7 +19,7 @@ namespace GLPL {
         int vertDataSizeBytes = internalData.size()*sizeof(internalData[0]);
         int indicesDataSizeBytes = internalIndices.size()*sizeof(internalIndices[0]);
         createAndSetupBuffers(vertDataSizeBytes, indicesDataSizeBytes,
-                              &internalData[0], &internalIndices[0],
+                              internalData.data(), internalIndices.data(),
                               2*sizeof(internalData[0]));
 
         /* Set number of Points */
