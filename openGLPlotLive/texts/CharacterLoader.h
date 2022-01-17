@@ -83,8 +83,8 @@ namespace GLPL {
         glm::vec2 calcPixelsPerEmSquare(int fontSize);
         TextFontDimensions getStringFontDimensions(std::string newString);
 
-
         int getEmSquareSize();
+        void determineScaling(float monitorWidthPixels, float monitorHeightPixels, float monitorWidthMm, float monitorHeightMm);
 
     private:
         // Data
@@ -106,7 +106,6 @@ namespace GLPL {
         void loadFont(const GLchar *fontPath);
         void loadGlyphs();
         void createAndSetupBuffers();
-        void determineScaling();
     };
 }
 

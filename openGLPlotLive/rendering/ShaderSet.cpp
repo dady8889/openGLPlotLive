@@ -6,9 +6,6 @@
 
 namespace GLPL {
     GLPL::ShaderSet::ShaderSet() {
-        // Get DPI Scaling
-        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-        glfwGetMonitorContentScale(monitor, &xScaleDpi, &yScaleDpi);
 
         // Make shared_ptrs
         textShaderPt = std::make_shared<Shader>(textShader);
@@ -27,10 +24,21 @@ namespace GLPL {
         textureMangerPt = std::make_shared<TextureManager>(textureManager);
     }
 
+
     GLPL::ShaderSet::~ShaderSet() {
 
     }
 
+    void ShaderSet::setScalingDPI(float x, float y)
+    {
+        xScaleDpi = x;
+        yScaleDpi = y;
+    }
+
+    void ShaderSet::determineTextScaling(float monitorWidthPixels, float monitorHeightPixels, float monitorWidthMm, float monitorHeightMm)
+    {
+        characterLoaderPt->determineScaling(monitorWidthPixels, monitorHeightPixels, monitorWidthMm, monitorHeightMm);
+    }
 
     float ShaderSet::getXDpiScaling() {
         return xScaleDpi;

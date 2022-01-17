@@ -48,6 +48,9 @@ namespace GLPL {
         std::shared_ptr<CharacterLoader> getCharacterLoader();
         std::shared_ptr<TextureManager> getTextureManager();
 
+        void setScalingDPI(float x, float y);
+        void determineTextScaling(float monitorWidthPixels, float monitorHeightPixels, float monitorWidthMm, float monitorHeightMm);
+
     private:
         // DPI Scaling
         float xScaleDpi = 1;

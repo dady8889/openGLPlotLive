@@ -22,6 +22,25 @@ namespace GLPL {
         // Create Shader Set
         shaderSetPt = std::make_shared<ShaderSet>();
 
+        // Get DPI Scaling
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        float xScaleDpi, yScaleDpi;
+        glfwGetMonitorContentScale(monitor, &xScaleDpi, &yScaleDpi);
+
+        shaderSetPt->setScalingDPI(xScaleDpi, yScaleDpi);
+
+        // Get the first monitor resolution
+        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        auto monitorWidthPixel = (float)mode->width;
+        auto monitorHeightPixel = (float)mode->height;
+        // Get the physical size of the monitor
+        int count;
+        int widthMm, heightMm;
+        GLFWmonitor** monitors = glfwGetMonitors(&count);
+        glfwGetMonitorPhysicalSize(monitors[0], &widthMm, &heightMm);
+
+        shaderSetPt->determineTextScaling(monitorWidthPixel, monitorHeightPixel, widthMm, heightMm);
+
         // Update Stored Size
         Window::updateStoredSize();
     }

@@ -32,9 +32,17 @@ namespace GLPL {
         // Setup the Buffers
         // TODO - Remove?
         CharacterLoader::createAndSetupBuffers();
+    }
 
-        // Determine the font scaling
-        CharacterLoader::determineScaling();
+    void CharacterLoader::determineScaling(float monitorWidthPixels, float monitorHeightPixels, float monitorWidthMm, float monitorHeightMm) {
+        // 1 pt = 1/72inch = 25.4/72mm
+        ptInPixels = (float)(25.4 / 72) * (monitorHeightPixels / (float)monitorHeightMm);
+        ptInPerHeight = ptInPixels / monitorHeightPixels;
+        // Calculate dpi
+        float widthInch = (float)monitorWidthMm / inch2Mm;
+        float heightInch = (float)monitorHeightMm / inch2Mm;
+        dpiX = monitorWidthPixels / widthInch;
+        dpiY = monitorHeightPixels / heightInch;
     }
 
     std::shared_ptr<Character3> CharacterLoader::getCharacter(const char reqCharacter) {
@@ -104,26 +112,6 @@ namespace GLPL {
         glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,4*sizeof(GLfloat),0);
         glBindBuffer(GL_ARRAY_BUFFER,0);
         glBindVertexArray(0);
-    }
-
-    void CharacterLoader::determineScaling() {
-        // Get the first monitor resolution
-        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        auto monitorWidthPixel = (float)mode->width;
-        auto monitorHeightPixel = (float)mode->height;
-        // Get the physical size of the monitor
-        int count;
-        int widthMm, heightMm;
-        GLFWmonitor** monitors = glfwGetMonitors(&count);
-        glfwGetMonitorPhysicalSize(monitors[0], &widthMm, &heightMm);
-        // 1 pt = 1/72inch = 25.4/72mm
-        ptInPixels = (float)(25.4/72) * (monitorHeightPixel / (float)heightMm);
-        ptInPerHeight = ptInPixels / monitorHeightPixel;
-        // Calculate dpi
-        float widthInch = (float)widthMm / inch2Mm;
-        float heightInch = (float)heightMm / inch2Mm;
-        dpiX = monitorWidthPixel / widthInch;
-        dpiY = monitorHeightPixel / heightInch;
     }
 
     int CharacterLoader::getEmSquareSize() {
