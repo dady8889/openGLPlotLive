@@ -13,10 +13,10 @@
 #include <memory>
 
 // Project Includes
-#include "../src/rendering/fonts.h"
-#include "../src/window/window.h"
-#include "../src/lines/Line2DVecVec.h"
-#include "../src/lines/Line2DVecGLMV3.h"
+#include "openGLPlotLive/rendering/fonts.h"
+#include "openGLPlotLive/window/window.h"
+#include "openGLPlotLive/lines/Line2DVecVec.h"
+#include "openGLPlotLive/lines/Line2DVecGLMV3.h"
 
 
 int main(int argc, char **argv) {

@@ -50,7 +50,7 @@ endif(WIN32)
 add_definitions(-DGLFW_INCLUDE_NONE)
 
 # Add subdirectories
-add_subdirectory(src)
+add_subdirectory(openGLPlotLive)
 add_subdirectory(apps)
 #add_subdirectory(docs)
 #add_subdirectory(tests)
