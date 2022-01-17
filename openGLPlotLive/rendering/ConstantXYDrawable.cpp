@@ -125,6 +125,17 @@ namespace GLPL {
         updateChildren();
     }
 
+    void GLPL::ConstantXYDrawable::setParentDimensions(int newParentWidthPx, int newParentHeightPx)
+    {
+        this->parentWidthPx = newParentWidthPx;
+        this->parentHeightPx = newParentHeightPx;
+        updatePositionPx();
+        updateSizePx();
+        updateTransforms();
+        // Update Children
+        updateChildren();
+    }
+
     void ConstantXYDrawable::setXScale(XYScale newXScale) {
         xScale = newXScale;
         ConstantXYDrawable::updateSizePx();
