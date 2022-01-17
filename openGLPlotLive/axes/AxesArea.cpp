@@ -1103,4 +1103,17 @@ namespace GLPL {
         }
         grid->setLogModes(logX, logY);
     }
+
+    void AxesArea::showTitle(bool show) {
+        auto title = getText("axes-title");
+
+        if (show && !title->getVisible())
+        {
+            title->setVisible(true);
+        }
+        else if (!show && title->getVisible())
+        {
+            title->setVisible(false);
+        }
+    }
 }

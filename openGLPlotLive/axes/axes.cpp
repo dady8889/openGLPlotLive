@@ -139,4 +139,7 @@ namespace GLPL {
         axesArea->setButtonState(buttonName, activeState);
     }
 
+    void Axes::showTitle(bool show) {
+        axesArea->showTitle(show);
+    }
 }

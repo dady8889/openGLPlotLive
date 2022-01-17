@@ -39,6 +39,7 @@ namespace GLPL {
         void onLeftShiftDrag(bool dragging, double origXPos, double origYPos) override;
         void setLastMousePos(double lastMouseX, double lastMouseY) override;
         // Axes
+        void showTitle(bool show);
         void setAxesBoxOn(bool axesBoxOnBool);
         void setAxesBoxColor(glm::vec4 newAxesBoxColour);
         void addAxesLine(const std::string& axesName, AxesDirection axesDirection);

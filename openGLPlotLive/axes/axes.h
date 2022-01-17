@@ -34,6 +34,7 @@ namespace GLPL {
         void setAxesBoxOn(bool axesBoxOnBool);
         void setLogScale(bool logOn, unsigned int newLogBase, LogAxes logAxes);
         // Labels
+        void showTitle(bool show);
         void setTitle(std::string newTitle);
         void setXLabel(std::string newXLabel);
         void setYLabel(std::string newYLabel);

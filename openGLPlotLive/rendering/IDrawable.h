@@ -117,6 +117,8 @@ namespace GLPL {
         void setZDepthValue(int newZDepthValue);
         int getZDepthValue();
         void setAttachLocation(AttachLocation newAttachLocation);
+        void setVisible(bool isVisible);
+        bool getVisible();
 
     protected:
         // Dimensions
@@ -155,6 +157,8 @@ namespace GLPL {
         std::vector<GLfloat> mouseOverVertsWithChildren = { -1, -1,    1, -1,    1,  1,    -1, 1};
         std::vector<GLfloat> mouseOverVertsNoChildren =  { -1, -1,    1, -1,    1,  1,    -1, 1};
         glm::vec4 boundingBoxColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        bool visible{ true };
+
         // Transforms
         glm::mat4 parentTransform;                      // Transform of the parent
         glm::mat4 viewportTransform;                    // Transform only with the current drawable bounding box

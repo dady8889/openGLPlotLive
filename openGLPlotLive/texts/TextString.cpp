@@ -372,6 +372,9 @@ namespace GLPL {
 
 
     void TextString::drawText() {
+        if (!visible)
+            return;
+
         // Draw glyphs
         for(unsigned int i=0; i < textString.size(); i++) {
             // Get the corresponding character

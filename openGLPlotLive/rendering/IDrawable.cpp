@@ -458,6 +458,12 @@ std::array<float, 2> GLPL::IDrawable::generateXYPositionFromPin() {
     return xyPos;
 }
 
+void GLPL::IDrawable::setVisible(bool isVisible)
+{
+    visible = isVisible;
+}
 
-
-
+bool GLPL::IDrawable::getVisible()
+{
+    return visible;
+}
