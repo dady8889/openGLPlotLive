@@ -245,6 +245,11 @@ std::vector<GLfloat> GLPL::IDrawable::calcMouseOverVertsNoChildren() {
     float ymin = getBottom();
     float ymax = getTop();
 
+    xmin -= offsetsLocal[0];
+    xmax -= offsetsLocal[1];
+    ymin -= offsetsLocal[3];
+    ymax -= offsetsLocal[2];
+
     // Scale to -1 to 1
     xmin = 2*xmin - 1;
     xmax = 2*xmax - 1;
@@ -375,15 +380,17 @@ void GLPL::IDrawable::updateTransforms() {
 
     if (parentWidthPx > 0)
     {
-        offsetLeft = offsets[0] / (float)parentWidthPx;
-        offsetRight = offsets[1] / (float)parentWidthPx;
+        offsetLeft = offsetsPx[0] / (float)parentWidthPx;
+        offsetRight = offsetsPx[1] / (float)parentWidthPx;
     }
 
     if (parentHeightPx > 0)
     {
-        offsetTop = offsets[2] / (float)parentHeightPx;
-        offsetBottom = offsets[3] / (float)parentHeightPx;
+        offsetTop = offsetsPx[2] / (float)parentHeightPx;
+        offsetBottom = offsetsPx[3] / (float)parentHeightPx;
     }
+
+    offsetsLocal = glm::vec4(offsetLeft, offsetRight, offsetTop, offsetBottom);
 
     this->viewportTransform = GLPL::Transforms::viewportTransform(xy[0] + offsetLeft, xy[1] + offsetBottom, width - (offsetLeft + offsetRight), height - (offsetTop + offsetBottom));
     this->overallTransform = parentTransform * viewportTransform;
@@ -487,10 +494,7 @@ bool GLPL::IDrawable::getVisible()
 
 void GLPL::IDrawable::setOffset(int left, int right, int top, int bottom)
 {
-    offsets[0] = left;
-    offsets[1] = right;
-    offsets[2] = top;
-    offsets[3] = bottom;
+    offsetsPx = glm::vec4(left, right, top, bottom);
 
     updatePositionPx();
     updateSizePx();

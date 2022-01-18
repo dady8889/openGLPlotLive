@@ -139,11 +139,7 @@ namespace GLPL {
 
     void PressButton::setOffset(int left, int right, int top, int bottom)
     {
-        offsets[0] = left;
-        offsets[1] = right;
-        offsets[2] = top;
-        offsets[3] = bottom;
-
+        offsetsPx = glm::vec4(left, right, top, bottom);
         ConstantXYDrawable::setSize(widthPx + left + right, heightPx + top + bottom);
 
         updatePositionPx();

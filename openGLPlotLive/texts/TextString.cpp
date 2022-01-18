@@ -116,8 +116,9 @@ namespace GLPL {
         float yScaleDpi = this->shaderSetPt->getYDpiScaling();
         auto pixelWidth = (float)(pixelPerEm[0] * emWidth / xScaleDpi);
         auto pixelHeight = (float)(pixelPerEm[1] * emHeight / yScaleDpi);
-        int offsetX = offsets[0] + offsets[1];
-        int offsetY = offsets[2] + offsets[3];
+
+        int offsetX = offsetsPx[0] + offsetsPx[1];
+        int offsetY = offsetsPx[2] + offsetsPx[3];
 
         switch (textRotation) {
             case HORIZONTAL:
