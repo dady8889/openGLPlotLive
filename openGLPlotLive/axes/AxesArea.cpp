@@ -863,10 +863,11 @@ namespace GLPL {
     void GLPL::AxesArea::updateAxesLimits() {
         if (buttonMap["Axes Limits Scaling"]->isActive()) {
             // Get the overall maximum and minimum from all lines
-            float newXmin = -0.0;
-            float newXmax = 0.0;
-            float newYmin = -0.0;
-            float newYmax = 0.0;
+            float newXmin = FLT_MAX;
+            float newXmax = -FLT_MAX;
+            float newYmin = FLT_MAX;
+            float newYmax = -FLT_MAX;
+
             if (axesLines.at("x")->getLogState()) {
                 newXmin = 1.0;
                 newXmax = 1.0;
@@ -875,8 +876,16 @@ namespace GLPL {
                 newYmin = 1.0;
                 newYmax = 1.0;
             }
+
             for (std::pair<unsigned int, std::shared_ptr<Plotable>> lineInfo : plotableMap) {
-                std::vector<float> minMax = lineInfo.second->getMinMax(true);
+                if (lineInfo.first < 2) {
+                    // first plotable is the interactor, second is the zoom box.
+                    // zoombox inserts into the data vectors a zero point, which we need to ignore
+                    // to calculate axis limits correctly.
+                    continue;
+                }
+
+                std::vector<float> minMax = lineInfo.second->getMinMax();
                 if (minMax.size() == 4) {
                     if (minMax[0] < newXmin) { newXmin = minMax[0]; };
                     if (minMax[1] > newXmax) { newXmax = minMax[1]; };
@@ -886,7 +895,7 @@ namespace GLPL {
             }
 
             // Set axes limits
-            float absLim = 1e-10;
+            const float absLim = 1e-10;
             if ((abs(xmin - newXmin) > absLim) ||
                 (abs(xmax - newXmax) > absLim) ||
                 (abs(ymin - newYmin) > absLim) ||
