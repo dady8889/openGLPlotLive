@@ -34,18 +34,37 @@ namespace GLPL {
         AxesArea::updateAxesViewportTransform();
 
         // Add Title
-        AxesArea::addText("Axes Title", "axes-title", 0.5, 1.1, 14, CENTRE_BOTTOM);
+        AxesArea::addText("Axes Title", "axes-title", 0.5, 1, 14, CENTRE_BOTTOM)
+            ->setOffset(0, 0, 0, 20);
 
         // Add Axes Label
-        AxesArea::addText("x label", "x-label", 0.5, -0.11, 12, CENTRE_TOP);
-        AxesArea::addText("y label", "y-label", -0.175, 0.5, 12, CENTRE_RIGHT);
+        AxesArea::addText("x label", "x-label", 0.5, 0, 12, CENTRE_TOP)
+            ->setOffset(0, 0, 8, 0);
+
+        AxesArea::addText("y label", "y-label", 0, 0.5, 12, CENTRE_RIGHT)
+            ->setOffset(0, 7, 0, 0);
 
         // Add Buttons
-        AxesArea::addButtonWithTexture("Interactor", "interactor-white", 1.0, 1.01, 0.08, 0.08, BOTTOM_RIGHT, true, "Toggle the interactor");
-        AxesArea::addButtonWithTexture("Axes Limits Scaling", "axes-limits-white", 0.91, 1.01, 0.08, 0.08, BOTTOM_RIGHT, true, "Enable/disable axes auto scaling");
-        AxesArea::addButtonWithTexture("Grid", "grid-white", 0.82, 1.01, 0.08, 0.08, BOTTOM_RIGHT, true, "Toggle grid");
-        AxesArea::addButtonWithTexture("Axes", "axes-white", 0.73, 1.01, 0.08, 0.08, BOTTOM_RIGHT, true, "Toggle axes");
-        AxesArea::addButtonWithTexture("AxesBox", "axes-box-white", 0.64, 1.01, 0.08, 0.08, BOTTOM_RIGHT, true, "Toggle axes box");
+        const float buttonWidth = 45;
+        const float buttonHeight = 45;
+        const float buttonLocationY = 0.0f;
+        const int gap = buttonWidth + 10;
+        int buttonCounter = 0;
+
+        AxesArea::addButtonWithTexture("Interactor", "interactor-white", 1, buttonLocationY, buttonWidth, buttonHeight, TOP_RIGHT, true, "Toggle the interactor")
+            ->setOffset(0, gap * buttonCounter++, 0, 0);
+
+        AxesArea::addButtonWithTexture("Axes Limits Scaling", "axes-limits-white", 1, buttonLocationY, buttonWidth, buttonHeight, TOP_RIGHT, true, "Enable/disable axes auto scaling")
+            ->setOffset(0, gap * buttonCounter++, 0, 0);
+
+        AxesArea::addButtonWithTexture("Grid", "grid-white", 1, buttonLocationY, buttonWidth, buttonHeight, TOP_RIGHT, true, "Toggle grid")
+            ->setOffset(0, gap * buttonCounter++, 0, 0);
+
+        AxesArea::addButtonWithTexture("Axes", "axes-white", 1, buttonLocationY, buttonWidth, buttonHeight, TOP_RIGHT, true, "Toggle axes")
+            ->setOffset(0, gap * buttonCounter++, 0, 0);
+
+        AxesArea::addButtonWithTexture("AxesBox", "axes-box-white", 1, buttonLocationY, buttonWidth, buttonHeight, TOP_RIGHT, true, "Toggle axes box")
+            ->setOffset(0, gap * buttonCounter++, 0, 0);
 
         // Create Interactor
         AxesArea::createInteractor();
@@ -410,7 +429,7 @@ namespace GLPL {
         return scatterPt;
     }
 
-    void AxesArea::addText(std::string textString, std::string stringId, float x, float y, float fontSize, AttachLocation attachLocation) {
+    std::shared_ptr<TextString> AxesArea::addText(std::string textString, std::string stringId, float x, float y, float fontSize, AttachLocation attachLocation) {
         if (textStringMap.count(stringId) == 0) {
             // Create Parent Dimensions
             std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
@@ -424,9 +443,13 @@ namespace GLPL {
             AxesArea::registerChild(textStringObj);
             // Store Text String
             textStringMap.insert(std::pair<std::string, std::shared_ptr<TextString>>(stringId, textStringPt));
+
+            return textStringPt;
         } else {
             std::cout << "String " << stringId << "already exists!" << std::endl;
         }
+
+        return nullptr;
     }
 
     std::shared_ptr<TextString> AxesArea::getText(std::string textStringId) {
@@ -576,7 +599,7 @@ namespace GLPL {
         buttonMap.insert(std::pair<std::string, std::shared_ptr<PressButton>>(buttonName, buttonObjPt));
     }
 
-    void AxesArea::addButtonWithTexture(const std::string& buttonName, const std::string& textureName, float x, float y, float width, float height,
+    std::shared_ptr<PressButton> AxesArea::addButtonWithTexture(const std::string& buttonName, const std::string& textureName, float x, float y, float width, float height,
                              AttachLocation attachLocation, bool activeState, const std::string& tooltipText) {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
@@ -591,6 +614,8 @@ namespace GLPL {
         AxesArea::registerChild(buttonObj);
         // Store button
         buttonMap.insert(std::pair<std::string, std::shared_ptr<PressButton>>(buttonName, buttonObjPt));
+
+        return buttonObjPt;
     }
 
     void AxesArea::setButtonState(const std::string& buttonName, bool activeState) {

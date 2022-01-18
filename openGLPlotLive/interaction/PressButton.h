@@ -25,6 +25,7 @@ namespace GLPL {
         void onLeftClick() override;
         std::string getID();
         void setHovered(bool newHovered);
+        void setOffset(int left, int right, int top, int bottom) override;
 
 
     private:

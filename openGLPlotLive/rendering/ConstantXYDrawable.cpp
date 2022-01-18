@@ -44,11 +44,12 @@ namespace GLPL {
 
     void ConstantXYDrawable::setSize(float newWidth, float newHeight) {
         // New width and height dependent on xScale, yScale
+
         // Update width
         switch(xScale) {
             case CONSTANT_SIZE: {
                 widthPx = (int)newWidth;
-                width = (float)widthPx / float(parentWidthPx);
+                width = (float)widthPx / (float)parentWidthPx;
                 break;
             }
             case CONSTANT_SCALE: {
@@ -83,15 +84,37 @@ namespace GLPL {
     }
 
     void ConstantXYDrawable::updateSizePx() {
-        if (xScale == CONSTANT_SIZE && yScale == CONSTANT_SIZE) {
-            ConstantXYDrawable::setSize((float)getWidthPx(), (float)getHeightPx());
-        } else if (xScale == CONSTANT_SIZE && yScale == CONSTANT_SCALE) {
-            ConstantXYDrawable::setSize((float)getWidthPx(), getHeight());
-        } else if (xScale == CONSTANT_SCALE && yScale == CONSTANT_SIZE) {
-            ConstantXYDrawable::setSize(getWidth(), (float)getHeightPx());
-        } else if (xScale == CONSTANT_SCALE && yScale == CONSTANT_SCALE) {
-            ConstantXYDrawable::setSize(getWidth(), getHeight());
+        float newWidth{ 0 }, newHeight{ 0 };
+
+        switch (xScale) {
+            case CONSTANT_SIZE: {
+                newWidth = (float)getWidthPx();
+                break;
+            }
+            case CONSTANT_SCALE: {
+                newWidth = getWidth();
+                break;
+            }
+            default: {
+                std::cout << "Incorrect scale specified for xScale!" << std::endl;
+            }
         }
+
+        switch (yScale) {
+            case CONSTANT_SIZE: {
+                newHeight = (float)getHeightPx();
+                break;
+            }
+            case CONSTANT_SCALE: {
+                newHeight = getHeight();
+                break;
+            }
+            default: {
+                std::cout << "Incorrect scale specified for yScale!" << std::endl;
+            }
+        }
+
+        ConstantXYDrawable::setSize(newWidth, newHeight);
     }
 
     void ConstantXYDrawable::setParentDimensions(glm::mat4 newParentTransform,
@@ -151,6 +174,5 @@ namespace GLPL {
         yScale = newYScale;
         ConstantXYDrawable::updateSizePx();
     }
-
 
 }

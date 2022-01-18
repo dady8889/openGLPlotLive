@@ -53,14 +53,14 @@ namespace GLPL {
         std::shared_ptr<Plotable> getPlotable(int plotableId);
         void removePlotable(int plotableId);
         // Text
-        void addText(std::string textString, std::string stringId, float x, float y, float fontSize, AttachLocation attachLocation=BOTTOM_LEFT);
+        std::shared_ptr<TextString> addText(std::string textString, std::string stringId, float x, float y, float fontSize, AttachLocation attachLocation=BOTTOM_LEFT);
         std::shared_ptr<TextString> getText(std::string textStringId);
         void setText(std::string stringId, std::string newTextString);
         void setTextRotation(std::string stringId, TextRotation newTextRotation);
         void removeTextString(std::string textStringId);
         // PressButton
         void addButton(const std::string& buttonName, float x, float y, float width, float height, AttachLocation attachLocation, bool activeState = true);
-        void addButtonWithTexture(const std::string& buttonName, const std::string& textureName, float x, float y, float width, float height, AttachLocation attachLocation,
+        std::shared_ptr<PressButton> addButtonWithTexture(const std::string& buttonName, const std::string& textureName, float x, float y, float width, float height, AttachLocation attachLocation,
                 bool activeState = true, const std::string& tooltipText = "");
         void setButtonState(const std::string& buttonName, bool activeState);
         // Point Interactor

@@ -119,6 +119,7 @@ namespace GLPL {
         void setAttachLocation(AttachLocation newAttachLocation);
         void setVisible(bool isVisible);
         bool getVisible();
+        virtual void setOffset(int left, int right, int top, int bottom);
 
     protected:
         // Dimensions
@@ -158,6 +159,7 @@ namespace GLPL {
         std::vector<GLfloat> mouseOverVertsNoChildren =  { -1, -1,    1, -1,    1,  1,    -1, 1};
         glm::vec4 boundingBoxColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
         bool visible{ true };
+        std::array<int, 4> offsets = { 0, 0, 0, 0 };
 
         // Transforms
         glm::mat4 parentTransform;                      // Transform of the parent

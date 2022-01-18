@@ -32,8 +32,9 @@ namespace GLPL {
     void Axes::createAxesArea() {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
+
         // Register Child
-        std::shared_ptr<IDrawable> axesAreaObj = std::make_shared<AxesArea>(0.25, 0.2, 0.6, 0.6, newParentPointers);
+        std::shared_ptr<IDrawable> axesAreaObj = std::make_shared<AxesArea>(0, 0, 1, 1, newParentPointers);
         std::shared_ptr<AxesArea> axesAreaPt = std::dynamic_pointer_cast<AxesArea>(axesAreaObj);
         Axes::registerChild(axesAreaObj);
         // Store Text String

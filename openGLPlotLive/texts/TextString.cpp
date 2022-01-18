@@ -116,15 +116,18 @@ namespace GLPL {
         float yScaleDpi = this->shaderSetPt->getYDpiScaling();
         auto pixelWidth = (float)(pixelPerEm[0] * emWidth / xScaleDpi);
         auto pixelHeight = (float)(pixelPerEm[1] * emHeight / yScaleDpi);
+        int offsetX = offsets[0] + offsets[1];
+        int offsetY = offsets[2] + offsets[3];
+
         switch (textRotation) {
             case HORIZONTAL:
             case UPSIDE_DOWN: {
-                ConstantXYDrawable::setSize(pixelWidth, pixelHeight);
+                ConstantXYDrawable::setSize(pixelWidth + offsetX, pixelHeight + offsetY);
                 break;
             }
             case SIDEWAYS_LEFT:
             case SIDEWAYS_RIGHT: {
-                ConstantXYDrawable::setSize(pixelHeight, pixelWidth);
+                ConstantXYDrawable::setSize(pixelHeight + offsetX, pixelWidth + offsetY);
                 break;
             }
             default: {

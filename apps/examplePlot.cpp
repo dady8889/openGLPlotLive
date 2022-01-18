@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
 	myplot.getAxes()->setEqualAxes(true);*/
 
 	// Axes 1
-    std::shared_ptr<GLPL::Axes> axesPt = myplot->getAxes(0);
+    std::shared_ptr<GLPL::Axes> axesPt = myplot->addAxes(0.0f, 0.0f, 0.5f, 1.0f);
     std::shared_ptr<GLPL::ILine2D> line12 = axesPt->addLine(&xVec12, &yVec12, GLPL::SINGLE_LINE, LC_YELLOW, 0.5);
     std::shared_ptr<GLPL::Line2D2Vecs> line12b = std::dynamic_pointer_cast<GLPL::Line2D2Vecs>(line12);
     //axesPt->addLine(&xVec9, &yVec9, GLPL::SINGLE_LINE, LC_RED);
@@ -225,6 +225,8 @@ int main(int argc, char **argv) {
     std::shared_ptr<GLPL::Line2D2Vecs> line15b = std::dynamic_pointer_cast<GLPL::Line2D2Vecs>(line15);
     std::shared_ptr<GLPL::ILine2D> line16 = axesPt->addLine(&xVec16, &yVec16, GLPL::SINGLE_LINE, LC_BLUE, 0.5);
     std::shared_ptr<GLPL::Line2D2Vecs> line16b = std::dynamic_pointer_cast<GLPL::Line2D2Vecs>(line16);
+
+    axesPt->setOffset(100, 100, 100, 100);
     axesPt->setAxesBoxOn(false);
     axesPt->setButtonState("Grid", false);
     axesPt->setXLabel("Time (s)");
@@ -257,6 +259,8 @@ int main(int argc, char **argv) {
     std::shared_ptr<GLPL::Line2D2Vecs> line17b = std::dynamic_pointer_cast<GLPL::Line2D2Vecs>(line17);
     std::shared_ptr<GLPL::ILine2D> line11 = axes3Pt->addLine(&xVec11, &yVec11, GLPL::SHADED_LINE, LC_GREEN, 0.5);
     std::shared_ptr<GLPL::IScatterPlot> line9s = axes3Pt->addScatterPlot(&xVec14, &yVec14, LC_CYAN, 0.5);
+
+    axes3Pt->setOffset(100, 100, 100, 100);
     axes3Pt->setXLabel("Log(x)");
     axes3Pt->setYLabel("y");
     axes3Pt->setTitle("Example Log Plot");

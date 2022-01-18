@@ -11,7 +11,7 @@ namespace GLPL {
     PressButton::PressButton(std::string newButtonName, float x, float y, float width, float height,
                              std::shared_ptr<ParentDimensions> parentDimensions,
                              std::string tooltipText) :
-        ConstantXYDrawable(x, y, width, height, CONSTANT_SCALE, CONSTANT_SCALE, std::move(parentDimensions)) {
+        ConstantXYDrawable(x, y, width, height, CONSTANT_SIZE, CONSTANT_SIZE, std::move(parentDimensions)) {
         // Set button name
         buttonName = std::move(newButtonName);
 
@@ -31,6 +31,7 @@ namespace GLPL {
     }
 
     void PressButton::Draw() {
+
         // Draw button shading
         PressButton::drawButtonShading();
 
@@ -134,6 +135,22 @@ namespace GLPL {
                 tooltipPt->Draw();
             }
         }
+    }
+
+    void PressButton::setOffset(int left, int right, int top, int bottom)
+    {
+        offsets[0] = left;
+        offsets[1] = right;
+        offsets[2] = top;
+        offsets[3] = bottom;
+
+        ConstantXYDrawable::setSize(widthPx + left + right, heightPx + top + bottom);
+
+        updatePositionPx();
+        updateSizePx();
+        updateTransforms();
+        // Update Children
+        updateChildren();
     }
 
 }

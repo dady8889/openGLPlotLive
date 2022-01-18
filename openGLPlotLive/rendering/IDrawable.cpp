@@ -369,13 +369,30 @@ void GLPL::IDrawable::createAndSetupBuffers() {
 void GLPL::IDrawable::updateTransforms() {
     // Update the transforms
     std::array<float, 2> xy = GLPL::IDrawable::generateXYPositionFromPin();
-    this->viewportTransform = GLPL::Transforms::viewportTransform(xy[0], xy[1], width, height);
+
+    // Calculate static offsets
+    float offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
+
+    if (parentWidthPx > 0)
+    {
+        offsetLeft = offsets[0] / (float)parentWidthPx;
+        offsetRight = offsets[1] / (float)parentWidthPx;
+    }
+
+    if (parentHeightPx > 0)
+    {
+        offsetTop = offsets[2] / (float)parentHeightPx;
+        offsetBottom = offsets[3] / (float)parentHeightPx;
+    }
+
+    this->viewportTransform = GLPL::Transforms::viewportTransform(xy[0] + offsetLeft, xy[1] + offsetBottom, width - (offsetLeft + offsetRight), height - (offsetTop + offsetBottom));
     this->overallTransform = parentTransform * viewportTransform;
 
     IDrawable::calcMouseOverVertsWithChildren();
 }
 
 void GLPL::IDrawable::updatePositionPx() {
+
     // Update the size in pixels
     this->xPx = (int)((float)parentXPx + (x*(float)parentWidthPx));
     this->yPx = (int)((float)parentYPx + (y*(float)parentHeightPx));
@@ -466,4 +483,18 @@ void GLPL::IDrawable::setVisible(bool isVisible)
 bool GLPL::IDrawable::getVisible()
 {
     return visible;
+}
+
+void GLPL::IDrawable::setOffset(int left, int right, int top, int bottom)
+{
+    offsets[0] = left;
+    offsets[1] = right;
+    offsets[2] = top;
+    offsets[3] = bottom;
+
+    updatePositionPx();
+    updateSizePx();
+    updateTransforms();
+    // Update Children
+    updateChildren();
 }

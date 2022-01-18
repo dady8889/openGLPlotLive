@@ -17,6 +17,10 @@ namespace GLPL {
 
 
     class ConstantXYDrawable : public IDrawable {
+        // Data
+        XYScale xScale = CONSTANT_SCALE;
+        XYScale yScale = CONSTANT_SCALE;
+
     public:
         // Constructor
         ConstantXYDrawable(float x, float y, float width, float height,
@@ -41,12 +45,6 @@ namespace GLPL {
         void setXScale(XYScale newXScale);
         void setYScale(XYScale newYScale);
         void setXYScale(XYScale newXScale, XYScale newYScale);
-
-
-        // Data
-        XYScale xScale = CONSTANT_SCALE;
-        XYScale yScale = CONSTANT_SCALE;
-
     };
 
 }
