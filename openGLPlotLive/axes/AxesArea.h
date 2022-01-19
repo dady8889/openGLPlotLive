@@ -46,7 +46,7 @@ namespace GLPL {
         void setAxesLimits(float newXMin, float newXMax, float newYMin, float newYMax);
         void setLogScale(bool logOn, unsigned int newLogBase, LogAxes logAxes);
         // Plotables
-        std::shared_ptr<ILine2D> addLine(std::vector<float> *dataPtX, std::vector<float> *dataPtY,
+        std::shared_ptr<ILine2D> addLine(std::shared_ptr<std::span<float>> dataPtX, std::shared_ptr<std::span<float>> dataPtY,
                 LineType lineType=SINGLE_LINE, glm::vec3 colour=LC_WHITE, float opacityRatio=1.0);
         std::shared_ptr<IScatterPlot> addScatterPlot(std::vector<float> *dataPtX, std::vector<float> *dataPtY,
                 glm::vec3 colour = LC_WHITE, float opacityRatio=1.0, MarkerType markerType=CIRCLE);
@@ -102,8 +102,8 @@ namespace GLPL {
         // Buttons
         std::unordered_map<std::string, std::shared_ptr<PressButton>> buttonMap;
         // Interactor
-        std::vector<float> interactorDataX = {};
-        std::vector<float> interactorDataY = {};
+        std::shared_ptr<std::vector<float>> interactorDataX = std::make_shared<std::vector<float>>();
+        std::shared_ptr<std::vector<float>> interactorDataY = std::make_shared<std::vector<float>>();
         std::shared_ptr<Line2D2Vecs> interactorLine;
         std::shared_ptr<TextString> interactorText;
         // Grid
@@ -111,8 +111,8 @@ namespace GLPL {
         // Zoom Interaction
         float zoomRatio = 0.2;  // 10% on each scroll
         // Drag Zoom Box
-        std::vector<float> zoomBoxX = {};
-        std::vector<float> zoomBoxY = {};
+        std::shared_ptr<std::vector<float>> zoomBoxX = std::make_shared<std::vector<float>>();
+        std::shared_ptr<std::vector<float>> zoomBoxY = std::make_shared<std::vector<float>>();
         std::shared_ptr<Line2D2Vecs> zoomBoxLine;
         // Mouse
         bool rightMouseHeld = false;

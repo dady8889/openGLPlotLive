@@ -6,7 +6,6 @@
 
 #include <utility>
 
-
 namespace GLPL {
 
     Plotable::Plotable(std::shared_ptr<ParentDimensions> parentDimensions) :
@@ -22,7 +21,7 @@ namespace GLPL {
         plotableId = newPlotableId;
     }
 
-    std::pair<std::vector<unsigned int>, std::vector<unsigned int>> Plotable::genIndicesSortedVector(std::vector<float>* unsortedVector) {
+    std::pair<std::vector<unsigned int>, std::vector<unsigned int>> Plotable::genIndicesSortedVector(std::span<float>* unsortedVector) {
         // Create vector of indices to use for sorting other vectors
         std::vector<unsigned int> indicesForSorting(unsortedVector->size());
         std::iota(indicesForSorting.begin(), indicesForSorting.end(), 0);
@@ -42,7 +41,7 @@ namespace GLPL {
         return std::pair<std::vector<unsigned int>, std::vector<unsigned int>>(indicesForSorting, finalIndices);
     }
 
-    std::vector<float> Plotable::sortVectorByIndices(std::vector<float>* unsortedVector, std::vector<unsigned int> indices) {
+    std::vector<float> Plotable::sortVectorByIndices(std::span<float>* unsortedVector, std::span<unsigned int> indices) {
         // Sort vector by indices vector
         std::vector<float> sortedVector;
         sortedVector.reserve(unsortedVector->size());

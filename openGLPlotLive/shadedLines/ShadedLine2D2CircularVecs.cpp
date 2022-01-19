@@ -39,10 +39,10 @@ namespace GLPL {
         sortedInternalData.clear();
         sortedInternalData.resize(2*totLen);
         // Sort by x value
-        std::pair<std::vector<unsigned int>, std::vector<unsigned int>> outputIndices = genIndicesSortedVector(dataPtX);
+        std::pair<std::vector<unsigned int>, std::vector<unsigned int>> outputIndices = genIndicesSortedVector(&std::span<float>(dataPtX->data(), dataPtX->size()));
         std::vector<unsigned int> indicesForSorting = outputIndices.first;
-        std::vector<float> sortedX = sortVectorByIndices(dataPtX, indicesForSorting);
-        std::vector<float> sortedY = sortVectorByIndices(dataPtY, indicesForSorting);
+        std::vector<float> sortedX = sortVectorByIndices(&std::span<float>(dataPtX->data(), dataPtX->size()), indicesForSorting);
+        std::vector<float> sortedY = sortVectorByIndices(&std::span<float>(dataPtY->data(), dataPtY->size()), indicesForSorting);
         // Store sorted data
         for(unsigned int i=0; i<totLen; i++) {
             sortedInternalData[2*i] = sortedX[i];

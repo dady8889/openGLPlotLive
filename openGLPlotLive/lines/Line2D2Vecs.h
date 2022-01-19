@@ -7,13 +7,14 @@
 
 #include "ISingleLine2D.h"
 
+#include <span>
 
 namespace GLPL  {
     class Line2D2Vecs : public ISingleLine2D {
         // Two vectors corresponding to an x vector and a y vector
     public:
         /* Constructor */
-        Line2D2Vecs(std::vector<float>* dataPtX, std::vector<float>* dataPtY,
+        Line2D2Vecs(std::shared_ptr<std::span<float>> dataPtX, std::shared_ptr<std::span<float>> dataPtY,
                 std::shared_ptr<ParentDimensions> parentDimensions, GLenum mode = GL_LINE_STRIP);
 
         /* Destructor */
@@ -32,8 +33,8 @@ namespace GLPL  {
         std::vector<float> getInternalData();
         std::vector<unsigned int> getInternalIndices();
 
-        std::vector<float>* dataPtX;
-        std::vector<float>* dataPtY;
+        std::shared_ptr<std::span<float>> dataPtX;
+        std::shared_ptr<std::span<float>> dataPtY;
 
     protected:
         /* Data */
@@ -41,7 +42,7 @@ namespace GLPL  {
 
         std::vector<float> internalData;    // This is sorted by x values
         std::vector<unsigned int> internalIndices;   // This keeps track of the indices in their original order, for plotting
-
+        bool initialized = false;
     };
 
 }
