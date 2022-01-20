@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Setup project
-project(openGLPlotLive-proj)
+project(openGLPlotLive)
 
 # Set OpenGL Policy
 set(OpenGL_GL_PREFERENCE "GLVND")
@@ -18,9 +18,9 @@ endif()
 # set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/")
 
 # Windows specific setup
-if(WIN32)
-    include_directories("${CMAKE_SOURCE_DIR}/include")
-endif(WIN32)
+#if(WIN32)
+#    include_directories("${CMAKE_SOURCE_DIR}/include")
+#endif(WIN32)
 
 # Find Packages
 # GLM
