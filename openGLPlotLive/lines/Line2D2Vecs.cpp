@@ -96,7 +96,7 @@ namespace GLPL {
     std::vector<float> Line2D2Vecs::getMinMax(bool onlyPositiveX, bool onlyPositiveY) {
         // Gets the minimum and maximum values of both x and y for the data
         if (internalData.size() > 1) {
-            float maxFloat = std::numeric_limits<float>::max();
+            constexpr float maxFloat = std::numeric_limits<float>::max();
             float xmin = maxFloat;
             float xmax = -maxFloat;
             float ymin = maxFloat;

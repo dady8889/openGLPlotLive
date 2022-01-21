@@ -863,10 +863,11 @@ namespace GLPL {
     void GLPL::AxesArea::updateAxesLimits() {
         if (buttonMap["Axes Limits Scaling"]->isActive()) {
             // Get the overall maximum and minimum from all lines
-            float newXmin = FLT_MAX;
-            float newXmax = -FLT_MAX;
-            float newYmin = FLT_MAX;
-            float newYmax = -FLT_MAX;
+            constexpr float maxFloat = std::numeric_limits<float>::max();
+            float newXmin = maxFloat;
+            float newXmax = -maxFloat;
+            float newYmin = maxFloat;
+            float newYmax = -maxFloat;
 
             if (axesLines.at("x")->getLogState()) {
                 newXmin = 1.0;
