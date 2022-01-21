@@ -9,6 +9,7 @@
 #include "AxesArea.h"
 #include "../shadedLines/ShadedLine2D2CircularVecs.h"
 #include "../lines/Line2D2Vecs.h"
+#include "../lines/Line2DReadOnly.h"
 #include "../interaction/PressButtonWithImage.h"
 #include "../scatterPlot/IScatterPlot.h"
 #include "../scatterPlot/Scatter2D2Vecs.h"
@@ -323,6 +324,73 @@ namespace GLPL {
         std::vector<float> xyVec = {x1,y1,x2,y2};
 
         return xyVec;
+    }
+
+    std::shared_ptr<ILine2D> AxesArea::addFastLine(LineType lineType, glm::vec3 colour, float opacityRatio)
+    {
+        // Create Parent Dimensions
+        std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
+
+        // Create Line
+        std::shared_ptr<Plotable> lineObj;
+        std::shared_ptr<ILine2D> linePt;
+
+        lineObj = std::make_shared<Line2DReadOnly>(newParentPointers);
+        linePt = std::dynamic_pointer_cast<Line2DReadOnly>(lineObj);
+
+        // Set Attributes
+        linePt->setLineColour(colour);
+        linePt->setOpacityRatio(opacityRatio);
+
+        // Register Children
+        AxesArea::registerChild(lineObj);
+
+        // Set axes area transform
+        linePt->setAxesViewportTransform(axesViewportTransformation);
+
+        // Store line
+        linePt->setPlotableId(nextPlotableId);
+        plotableMap.insert(std::pair<unsigned int, std::shared_ptr<ILine2D>>(nextPlotableId, linePt));
+        nextPlotableId += 1;
+
+        // Update log bools
+        setPlotableLogModes();
+
+        return linePt;
+    }
+
+    std::shared_ptr<ILine2D> GLPL::AxesArea::addFastLine(float* dataPtX, float* dataPtY, size_t dataSize,
+        LineType lineType, glm::vec3 colour, float opacityRatio)
+    {
+        // Create Parent Dimensions
+        std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
+
+        // Create Line
+        std::shared_ptr<Plotable> lineObj;
+        std::shared_ptr<ILine2D> linePt;
+
+        lineObj = std::make_shared<Line2DReadOnly>(dataPtX, dataPtY, dataSize, newParentPointers);
+        linePt = std::dynamic_pointer_cast<Line2DReadOnly>(lineObj);
+
+        // Set Attributes
+        linePt->setLineColour(colour);
+        linePt->setOpacityRatio(opacityRatio);
+
+        // Register Children
+        AxesArea::registerChild(lineObj);
+
+        // Set axes area transform
+        linePt->setAxesViewportTransform(axesViewportTransformation);
+
+        // Store line
+        linePt->setPlotableId(nextPlotableId);
+        plotableMap.insert(std::pair<unsigned int, std::shared_ptr<ILine2D>>(nextPlotableId, linePt));
+        nextPlotableId += 1;
+
+        // Update log bools
+        setPlotableLogModes();
+
+        return linePt;
     }
 
     std::shared_ptr<ILine2D> AxesArea::addLine(std::vector<float> *dataPtX, std::vector<float> *dataPtY,

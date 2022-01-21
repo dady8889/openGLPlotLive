@@ -27,6 +27,10 @@ namespace GLPL {
         // Line
         std::shared_ptr<ILine2D> addLine(std::vector<float> *dataPtX, std::vector<float> *dataPtY, LineType lineType = SINGLE_LINE,
                      glm::vec3 colour = LC_WHITE, float opacityRatio=1.0);
+        // Fast Line
+        std::shared_ptr<ILine2D> addFastLine(LineType lineType = SINGLE_LINE, glm::vec3 colour = LC_WHITE, float opacityRatio = 1.0);
+        std::shared_ptr<ILine2D> addFastLine(float* dataPtX, float* dataPtY, size_t dataSize, LineType lineType = SINGLE_LINE, 
+                     glm::vec3 colour = LC_WHITE, float opacityRatio = 1.0);
         // Scatter Plots
         std::shared_ptr<IScatterPlot> addScatterPlot(std::vector<float> *dataPtX, std::vector<float> *dataPtY,
                                                      glm::vec3 colour = LC_WHITE, float opacityRatio=1.0, MarkerType markerType=CIRCLE);

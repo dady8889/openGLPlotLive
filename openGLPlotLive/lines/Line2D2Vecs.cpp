@@ -110,7 +110,7 @@ namespace GLPL {
                 if (xval < xmin && (!onlyPositiveX || xval > 0)) {
                     xmin = xval;
                 }
-                if (yval > ymax && (!onlyPositiveX || yval > 0)) {
+                if (yval > ymax && (!onlyPositiveY || yval > 0)) {
                     ymax = yval;
                 }
                 if (yval < ymin && (!onlyPositiveY || yval > 0)) {
