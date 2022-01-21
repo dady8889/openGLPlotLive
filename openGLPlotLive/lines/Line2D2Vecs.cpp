@@ -7,7 +7,7 @@
 #include <utility>
 
 namespace GLPL {
-    Line2D2Vecs::Line2D2Vecs(std::shared_ptr<std::span<float>> dataPtX, std::shared_ptr<std::span<float>> dataPtY,
+    Line2D2Vecs::Line2D2Vecs(std::vector<float> *dataPtX, std::vector<float> *dataPtY,
                              std::shared_ptr<ParentDimensions> parentDimensions,
                              GLenum mode) : ISingleLine2D(std::move(parentDimensions)) {
         this->dataPtX = dataPtX;
@@ -15,20 +15,15 @@ namespace GLPL {
         this->setMode(mode);
 
         /* Setup Buffers */
-        if (dataPtX != nullptr && dataPtY != nullptr)
-        {
-            updateInternalData();
-            int vertDataSizeBytes = internalData.size() * sizeof(internalData[0]);
-            int indicesDataSizeBytes = internalIndices.size() * sizeof(internalIndices[0]);
-            createAndSetupBuffers(vertDataSizeBytes, indicesDataSizeBytes,
-                internalData.data(), internalIndices.data(),
-                2 * sizeof(internalData[0]));
+        updateInternalData();
+        int vertDataSizeBytes = internalData.size()*sizeof(internalData[0]);
+        int indicesDataSizeBytes = internalIndices.size()*sizeof(internalIndices[0]);
+        createAndSetupBuffers(vertDataSizeBytes, indicesDataSizeBytes,
+                              internalData.data(), internalIndices.data(),
+                              2*sizeof(internalData[0]));
 
-            /* Set number of Points */
-            nPts = internalData.size() / 2.0;
-
-            initialized = true;
-        }
+        /* Set number of Points */
+        nPts = internalData.size()/2.0;
     }
 
     Line2D2Vecs::~Line2D2Vecs() {
@@ -36,25 +31,19 @@ namespace GLPL {
     }
 
     void Line2D2Vecs::updateInternalData() {
-        if (!initialized)
-        {
-            createAndSetupBuffers(0, 0, nullptr, nullptr, 0);
-            initialized = true;
-        }
-
         /* Creates an internal data store from the current dataVecPt */
         // Get minimum length of both vectors
         int len = std::min(this->dataPtX->size(), this->dataPtY->size());
         // Resize vector to data
         internalData.resize(2*len);
         // Sort by x value
-        std::pair<std::vector<unsigned int>, std::vector<unsigned int>> outputIndices = genIndicesSortedVector(dataPtX.get());
+        std::pair<std::vector<unsigned int>, std::vector<unsigned int>> outputIndices = genIndicesSortedVector(dataPtX);
         std::vector<unsigned int> indicesForSorting = outputIndices.first;
         std::vector<unsigned int> finalIndices = outputIndices.second;
 
         // Sort data by these indices
-        std::vector<float> sortedX = sortVectorByIndices(dataPtX.get(), indicesForSorting);
-        std::vector<float> sortedY = sortVectorByIndices(dataPtY.get(), indicesForSorting);
+        std::vector<float> sortedX = sortVectorByIndices(dataPtX, indicesForSorting);
+        std::vector<float> sortedY = sortVectorByIndices(dataPtY, indicesForSorting);
         internalIndices = finalIndices;
 
         // Update with new data
@@ -98,8 +87,8 @@ namespace GLPL {
     }
 
     void Line2D2Vecs::clearData() {
-        //this->dataPtX->clear();
-        //this->dataPtY->clear();
+        this->dataPtX->clear();
+        this->dataPtY->clear();
         this->updateInternalData();
         nPts = 0;
     }
@@ -107,7 +96,7 @@ namespace GLPL {
     std::vector<float> Line2D2Vecs::getMinMax(bool onlyPositiveX, bool onlyPositiveY) {
         // Gets the minimum and maximum values of both x and y for the data
         if (internalData.size() > 1) {
-            constexpr float maxFloat = std::numeric_limits<float>::max();
+            float maxFloat = std::numeric_limits<float>::max();
             float xmin = maxFloat;
             float xmax = -maxFloat;
             float ymin = maxFloat;

@@ -25,7 +25,7 @@ namespace GLPL {
         std::shared_ptr<TextString> getText(unsigned int textStringId);
         void removeTextString(unsigned int textStringId);
         // Line
-        std::shared_ptr<ILine2D> addLine(std::shared_ptr<std::span<float>> dataPtX, std::shared_ptr<std::span<float>> dataPtY, LineType lineType = SINGLE_LINE,
+        std::shared_ptr<ILine2D> addLine(std::vector<float> *dataPtX, std::vector<float> *dataPtY, LineType lineType = SINGLE_LINE,
                      glm::vec3 colour = LC_WHITE, float opacityRatio=1.0);
         // Scatter Plots
         std::shared_ptr<IScatterPlot> addScatterPlot(std::vector<float> *dataPtX, std::vector<float> *dataPtY,

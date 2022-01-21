@@ -168,10 +168,10 @@ namespace GLPL {
 
         // On Release, set the current axes limits to that of the zoom box line
         if (!dragging) {
-            float newXMin = std::min((*zoomBoxX.get())[0], (*zoomBoxX.get())[1]);
-            float newXMax = std::max((*zoomBoxX.get())[0], (*zoomBoxX.get())[1]);
-            float newYMin = std::min((*zoomBoxY.get())[0], (*zoomBoxY.get())[2]);
-            float newYMax = std::max((*zoomBoxY.get())[0], (*zoomBoxY.get())[2]);
+            float newXMin = std::min(zoomBoxX[0], zoomBoxX[1]);
+            float newXMax = std::max(zoomBoxX[0], zoomBoxX[1]);
+            float newYMin = std::min(zoomBoxY[0], zoomBoxY[2]);
+            float newYMax = std::max(zoomBoxY[0], zoomBoxY[2]);
             setAxesLimits(newXMin, newXMax, newYMin, newYMax);
         }
 
@@ -211,10 +211,10 @@ namespace GLPL {
 
         // On Release, set the current axes limits to that of the zoom box line
         if (!dragging) {
-            float newXMin = std::min((*zoomBoxX.get())[0], (*zoomBoxX.get())[1]);
-            float newXMax = std::max((*zoomBoxX.get())[0], (*zoomBoxX.get())[1]);
-            float newYMin = std::min((*zoomBoxY.get())[0], (*zoomBoxY.get())[2]);
-            float newYMax = std::max((*zoomBoxY.get())[0], (*zoomBoxY.get())[2]);
+            float newXMin = std::min(zoomBoxX[0], zoomBoxX[1]);
+            float newXMax = std::max(zoomBoxX[0], zoomBoxX[1]);
+            float newYMin = std::min(zoomBoxY[0], zoomBoxY[2]);
+            float newYMax = std::max(zoomBoxY[0], zoomBoxY[2]);
             setAxesLimits(newXMin, newXMax, newYMin, newYMax);
         }
 
@@ -325,7 +325,7 @@ namespace GLPL {
         return xyVec;
     }
 
-    std::shared_ptr<ILine2D> AxesArea::addLine(std::shared_ptr<std::span<float>> dataPtX, std::shared_ptr<std::span<float>> dataPtY,
+    std::shared_ptr<ILine2D> AxesArea::addLine(std::vector<float> *dataPtX, std::vector<float> *dataPtY,
             LineType lineType, glm::vec3 colour, float opacityRatio) {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
@@ -340,18 +340,12 @@ namespace GLPL {
                 break;
             }
             case SHADED_LINE: {
-                lineObj = std::make_shared<ShadedLine2D2CircularVecs>(
-                   new std::vector<float>(dataPtX->begin(), dataPtX->end()), 
-                   new std::vector<float>(dataPtY->begin(), dataPtY->end()),
-                    newParentPointers);
+                lineObj = std::make_shared<ShadedLine2D2CircularVecs>(dataPtX, dataPtY, newParentPointers);
                 linePt = std::dynamic_pointer_cast<ShadedLine2D2CircularVecs>(lineObj);
                 break;
             }
             default: {
-                lineObj = std::make_shared<ShadedLine2D2CircularVecs>(
-                    new std::vector<float>(dataPtX->begin(), dataPtX->end()),
-                    new std::vector<float>(dataPtY->begin(), dataPtY->end()), 
-                    newParentPointers);
+                lineObj = std::make_shared<ShadedLine2D2CircularVecs>(dataPtX, dataPtY, newParentPointers);
                 linePt = std::dynamic_pointer_cast<ShadedLine2D2CircularVecs>(lineObj);
             }
         }
@@ -789,12 +783,11 @@ namespace GLPL {
                             float x2 = mouseXAx;
                             float y2 = mouseYAx;
                             // Update line
-                            interactorDataX->clear();
-                            interactorDataY->clear();
-                            interactorDataX->push_back(x1);
-                            interactorDataX->push_back(x2);
-                            interactorDataY->push_back(y1);
-                            interactorDataY->push_back(y2);
+                            interactorLine->clearData();
+                            interactorLine->dataPtX->push_back(x1);
+                            interactorLine->dataPtX->push_back(x2);
+                            interactorLine->dataPtY->push_back(y1);
+                            interactorLine->dataPtY->push_back(y2);
                             interactorLine->updateInternalData();
                             // Update Text String
                             char textBuf[50];
@@ -820,14 +813,10 @@ namespace GLPL {
                     }
                 }
             } else {
-                interactorDataX->clear();
-                interactorDataY->clear();
                 interactorLine->clearData();
                 interactorText->setTextString("");
             }
         } else {
-            interactorDataX->clear();
-            interactorDataY->clear();
             interactorLine->clearData();
             interactorText->setTextString("");
         }
@@ -846,43 +835,38 @@ namespace GLPL {
 
 
             // Update line
-            zoomBoxY->clear();
-            zoomBoxX->clear();
             zoomBoxLine->clearData();
             // Pt 1 - (dragX, dragY)
-            zoomBoxX->push_back(dragXAx);
-            zoomBoxY->push_back(dragYAx);
+            zoomBoxLine->dataPtX->push_back(dragXAx);
+            zoomBoxLine->dataPtY->push_back(dragYAx);
             // Pt 2 - (mouseX, dragY)
-            zoomBoxX->push_back(mouseXAx);
-            zoomBoxY->push_back(dragYAx);
+            zoomBoxLine->dataPtX->push_back(mouseXAx);
+            zoomBoxLine->dataPtY->push_back(dragYAx);
             // Pt 3 - (mouseX, mouseY)
-            zoomBoxX->push_back(mouseXAx);
-            zoomBoxY->push_back(mouseYAx);
+            zoomBoxLine->dataPtX->push_back(mouseXAx);
+            zoomBoxLine->dataPtY->push_back(mouseYAx);
             // Pt 4 - (dragX, mouseY)
-            zoomBoxX->push_back(dragXAx);
-            zoomBoxY->push_back(mouseYAx);
+            zoomBoxLine->dataPtX->push_back(dragXAx);
+            zoomBoxLine->dataPtY->push_back(mouseYAx);
             // Pt 1 - (dragX, dragY)
-            zoomBoxX->push_back(dragXAx);
-            zoomBoxY->push_back(dragYAx);
+            zoomBoxLine->dataPtX->push_back(dragXAx);
+            zoomBoxLine->dataPtY->push_back(dragYAx);
 
             zoomBoxLine->updateInternalData();
         } else {
-            zoomBoxY->clear();
-            zoomBoxX->clear();
             zoomBoxLine->clearData();
-            zoomBoxX->push_back(0.0f);
-            zoomBoxX->push_back(0.0f);
+            zoomBoxLine->dataPtX->push_back(0.0f);
+            zoomBoxLine->dataPtY->push_back(0.0f);
         }
     }
 
     void GLPL::AxesArea::updateAxesLimits() {
         if (buttonMap["Axes Limits Scaling"]->isActive()) {
             // Get the overall maximum and minimum from all lines
-            constexpr float maxFloat = std::numeric_limits<float>::max();
-            float newXmin = maxFloat;
-            float newXmax = -maxFloat;
-            float newYmin = maxFloat;
-            float newYmax = -maxFloat;
+            float newXmin = FLT_MAX;
+            float newXmax = -FLT_MAX;
+            float newYmin = FLT_MAX;
+            float newYmax = -FLT_MAX;
 
             if (axesLines.at("x")->getLogState()) {
                 newXmin = 1.0;
@@ -1086,10 +1070,7 @@ namespace GLPL {
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
 
         // Create Line
-        interactorLine = std::make_shared<Line2D2Vecs>(
-            std::make_shared<std::span<float>>(interactorDataX->data(), interactorDataX->size()), 
-            std::make_shared<std::span<float>>(interactorDataY->data(), interactorDataY->size()), 
-            newParentPointers);
+        interactorLine = std::make_shared<Line2D2Vecs>(&interactorDataX, &interactorDataY, newParentPointers);
         // Register Children
         AxesArea::registerChild(interactorLine);
         // Set axes area transform
@@ -1103,7 +1084,7 @@ namespace GLPL {
 
         // Create text label
         // Create label
-        interactorText = std::make_shared<TextString>("", x, y, 8.0f, newParentPointers);
+        interactorText = std::make_shared<TextString>("", x, y, 8, newParentPointers);
         interactorText->setAttachLocation(CENTRE_BOTTOM);
         interactorText->setHoverable(false);
         // Register Child
@@ -1130,10 +1111,7 @@ namespace GLPL {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
         // Create Line
-        zoomBoxLine = std::make_shared<Line2D2Vecs>(
-            std::make_shared<std::span<float>>(zoomBoxX->data(), zoomBoxX->size()),
-            std::make_shared<std::span<float>>(zoomBoxY->data(), zoomBoxY->size()),
-            newParentPointers);
+        zoomBoxLine = std::make_shared<Line2D2Vecs>(&zoomBoxX, &zoomBoxY, newParentPointers);
         // Set Properties
         zoomBoxLine->setLineColour(glm::vec3(0.0f, 1.0f, 0.0f));
         zoomBoxLine->setLineWidth(2);

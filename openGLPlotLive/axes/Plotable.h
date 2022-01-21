@@ -7,7 +7,6 @@
 
 // Standard Includes
 #include <numeric>
-#include <span>
 
 // Project Includes
 #include "../rendering/ConstantXYDrawable.h"
@@ -24,8 +23,8 @@ namespace GLPL {
         void setAxesViewportTransform(std::shared_ptr<glm::mat4> newAxesViewportTransform);
         void setPlotableId(int newPlotableId);
 
-        std::pair<std::vector<unsigned int>, std::vector<unsigned int>> genIndicesSortedVector(std::span<float>* unsortedVector);
-        std::vector<float> sortVectorByIndices(std::span<float>* unsortedVector, std::span<unsigned int> indices);
+        std::pair<std::vector<unsigned int>, std::vector<unsigned int>> genIndicesSortedVector(std::vector<float>* unsortedVector);
+        std::vector<float> sortVectorByIndices(std::vector<float>* unsortedVector, std::vector<unsigned int> indices);
 
         virtual std::tuple<float, float> getClosestPoint(float xVal) = 0;
         virtual std::tuple<float, float> getClosestPoint(float xVal, float xmin, float xmax, float ymin, float ymax) = 0;
