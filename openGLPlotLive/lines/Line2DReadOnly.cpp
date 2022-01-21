@@ -19,6 +19,11 @@ namespace GLPL {
 	Line2DReadOnly::~Line2DReadOnly() {
 	}
 
+	void Line2DReadOnly::clearBuffer()
+	{
+		m_clear = true;
+	}
+
 	void GLPL::Line2DReadOnly::setSourceArrays(float* xArray, float* yArray, size_t dataSize)
 	{
 		m_dataPtX = xArray;
@@ -75,6 +80,19 @@ namespace GLPL {
 	void Line2DReadOnly::Draw() {
 		if (!m_initialized)
 			return;
+
+		if (m_clear)
+		{
+			glBindVertexArray(lineVAO);
+			glDeleteBuffers(1, &lineVBO);
+			glDeleteBuffers(1, &lineEBO);
+			glBindVertexArray(0);
+			glDeleteVertexArrays(1, &lineVAO);
+
+			m_initialized = false;
+			m_clear = false;
+			return;
+		}
 
 		// Draw plot
 		drawData(m_dataSize, selected);

@@ -17,6 +17,7 @@ namespace GLPL {
 		~Line2DReadOnly();
 
 		/* Functions */
+		void clearBuffer();
 		void setSourceArrays(float* yArray, float* xArray, size_t dataSize);
 		void updateInternalData();
 		void Draw();
@@ -31,6 +32,7 @@ namespace GLPL {
 		float* m_dataPtY{ nullptr };
 		size_t m_dataSize{ 0 };
 		bool m_initialized{ false };
+		bool m_clear{ false };
 
 		std::vector<float> internalData;    // This is sorted by x values
 		std::vector<unsigned int> internalIndices;   // This keeps track of the indices in their original order, for plotting
