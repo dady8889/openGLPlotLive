@@ -886,7 +886,7 @@ namespace GLPL {
                     continue;
                 }
 
-                std::vector<float> minMax = lineInfo.second->getMinMax();
+                std::vector<float> minMax = lineInfo.second->getMinMax(true);
                 if (minMax.size() == 4) {
                     if (minMax[0] < newXmin) { newXmin = minMax[0]; };
                     if (minMax[1] > newXmax) { newXmax = minMax[1]; };
