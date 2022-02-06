@@ -278,12 +278,11 @@ namespace GLPL {
         for(const auto& axesLine : axesLines) {
             axesLine.second->setMinMax(newXMin, newXMax, newYMin, newYMax);
         }
+
         // Update Grid
         grid->setMinMax(newXMin, newXMax, newYMin, newYMax);
-        std::vector<float> xAxesPos = axesLines.at("x")->getAxesTickPos();
-        std::vector<float> yAxesPos = axesLines.at("y")->getAxesTickPos();
-        grid->setXLines(xAxesPos);
-        grid->setYLines(yAxesPos);
+        refreshGrid();
+
         // Update Axes Area
         AxesArea::updateAxesViewportTransform();
     }
@@ -707,6 +706,7 @@ namespace GLPL {
         // Update Grid
         if (grid != nullptr) {
             grid->setAxesViewportTransform(axesViewportTransformation);
+            refreshGrid();
         }
     }
 
@@ -831,6 +831,17 @@ namespace GLPL {
         if (buttonMap["Grid"]->isActive()) {
             grid->Draw();
         }
+    }
+
+    void GLPL::AxesArea::refreshGrid()
+    {
+        if (axesLines.size() < 2)
+            return;
+
+        std::vector<float> xAxesPos = axesLines.at("x")->getAxesTickPos();
+        std::vector<float> yAxesPos = axesLines.at("y")->getAxesTickPos();
+        grid->setXLines(xAxesPos);
+        grid->setYLines(yAxesPos);
     }
 
     void GLPL::AxesArea::updateInteractor() {

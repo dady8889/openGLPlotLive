@@ -26,6 +26,7 @@ namespace GLPL {
         std::string getID();
         void setHovered(bool newHovered);
         void setOffset(int left, int right, int top, int bottom) override;
+        int getHoverCursor() override;
 
 
     private:

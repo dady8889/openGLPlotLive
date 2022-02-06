@@ -5,6 +5,7 @@ namespace GLPL {
 	Line2DReadOnly::Line2DReadOnly(std::shared_ptr<ParentDimensions> parentDimensions, GLenum mode) 
 		: ISingleLine2D(std::move(parentDimensions))
 	{
+		setVisible(false);
 		this->setMode(mode);
 	}
 
@@ -12,6 +13,7 @@ namespace GLPL {
 		std::shared_ptr<ParentDimensions> parentDimensions,
 		GLenum mode) : ISingleLine2D(std::move(parentDimensions))
 	{
+		setVisible(false);
 		this->setMode(mode);
 		setSourceArrays(dataPtX, dataPtY, dataSize);
 	}
@@ -22,6 +24,7 @@ namespace GLPL {
 	void Line2DReadOnly::clearBuffer()
 	{
 		m_clear = true;
+		setVisible(false);
 	}
 
 	void GLPL::Line2DReadOnly::setSourceArrays(float* xArray, float* yArray, size_t dataSize)
@@ -57,6 +60,7 @@ namespace GLPL {
 		if (!m_initialized)
 		{
 			m_initialized = true;
+			setVisible(true);
 
 			int vertDataSizeBytes = internalData.size() * sizeof(internalData[0]);
 			int indicesDataSizeBytes = internalIndices.size() * sizeof(internalIndices[0]);

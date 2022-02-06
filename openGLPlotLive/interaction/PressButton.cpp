@@ -149,4 +149,9 @@ namespace GLPL {
         updateChildren();
     }
 
+    int PressButton::getHoverCursor()
+    {
+        return GLFW_HAND_CURSOR; // hand
+    }
+
 }

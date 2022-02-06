@@ -137,6 +137,7 @@ namespace GLPL {
         glm::mat4 scale2AxesLimits();
         void drawAxesBox();
         void drawGrid();
+        void refreshGrid();
         void updateInteractor();
         void updateZoomDragBox();
         void updateAxesLimits();
