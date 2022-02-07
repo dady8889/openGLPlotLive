@@ -876,7 +876,7 @@ namespace GLPL {
                             } else {
                                 formatStr = "(%.2f, %.2f)";
                             }
-                            sprintf(textBuf, formatStr, x, y1);
+                            sprintf(textBuf, formatStr, x1, y1);
                             interactorText->setTextString(textBuf);
                             // Check if the text string should be above or below
                             if (y1 > y2) {
