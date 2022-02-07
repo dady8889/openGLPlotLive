@@ -115,7 +115,7 @@ namespace GLPL {
         float baseFontSize = 10.0f;
         float currFontSize = 10.0f;
         float xOffsetFactor = 1.2f;
-        float yOffsetFactor = 1.2f;
+        float yOffsetFactor = -0.2f;
         float overlapFactor = 0.01;
         std::vector<std::shared_ptr<TextString>> majorTickTextStrings; // Holds the text labels for major axes ticks
 

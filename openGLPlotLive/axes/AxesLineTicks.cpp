@@ -50,13 +50,13 @@ namespace GLPL {
         // Generate major tick labels
         AxesLineTicks::generateMajorTickLabels();
         // Check overlapping
-        while (currFontSize > 0 && isLabelsOverlapping()) {
-            currFontSize -= 1;
-            AxesLineTicks::setMajorTickFontSize(currFontSize);
-            AxesLineTicks::generateMajorTickLabels();
-            // Update size
-            AxesLineTicks::updateSize();
-        }
+        //while (currFontSize > 0 && isLabelsOverlapping()) {
+        //    currFontSize -= 1;
+        //    AxesLineTicks::setMajorTickFontSize(currFontSize);
+        //    AxesLineTicks::generateMajorTickLabels();
+        //    // Update size
+        //    AxesLineTicks::updateSize();
+        //}
 
         // Update mouse over verts
         IDrawable::calcMouseOverVertsWithChildren();
@@ -452,7 +452,7 @@ namespace GLPL {
 
         // Generate vertices
         for(unsigned int i=0; i < relPos.size(); i++) {
-            if (axesPos[i] >= (xMin - abs(0.01 * xMin)) && axesPos[i] <= (xMax + abs(0.01 * xMax))) {
+            if (axesPos[i] >= (xMin - 0.01) && axesPos[i] <= (xMax + 0.01)) {
                 switch (axesDirection) {
                     case X_AXES_TOP: {
                         AxesLineTicks::generateXTopTickVerts(tickSpacingType[i], relPos[i], axesPos[i]);
@@ -563,31 +563,31 @@ namespace GLPL {
         switch(axesDirection) {
             case X_AXES_TOP: {
                 labelXPos = xPos;
-                labelYPos = yOffsetFactor * abs(yPos);
+                labelYPos = xOffsetFactor * abs(yPos);
                 break;
             }
             case X_AXES_BOTTOM: {
                 labelXPos = xPos;
-                labelYPos = -yOffsetFactor * abs(yPos);
+                labelYPos = -xOffsetFactor * abs(yPos);
                 break;
             }
             case X_AXES_CENTRE: {
                 labelXPos = xPos;
-                labelYPos = -yOffsetFactor * abs(yPos);
+                labelYPos = -xOffsetFactor * abs(yPos);
                 break;
             }
             case Y_AXES_LEFT: {
-                labelXPos = -xOffsetFactor * abs(xPos);
+                labelXPos = -yOffsetFactor * abs(xPos);
                 labelYPos = yPos;
                 break;
             }
             case Y_AXES_RIGHT: {
-                labelXPos = xOffsetFactor * abs(xPos);
+                labelXPos = yOffsetFactor * abs(xPos);
                 labelYPos = yPos;
                 break;
             }
             case Y_AXES_CENTRE: {
-                labelXPos = -xOffsetFactor * abs(xPos);
+                labelXPos = -yOffsetFactor * abs(xPos);
                 labelYPos = yPos;
                 break;
             }
@@ -627,7 +627,7 @@ namespace GLPL {
                 break;
             }
             case Y_AXES_CENTRE: {
-                attachLocation = CENTRE_RIGHT;
+                attachLocation = CENTRE_LEFT;
                 break;
             }
             default: {
@@ -795,7 +795,25 @@ namespace GLPL {
             // Create Parent Dimensions
             std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
             // Create Text String
-            std::string text = value2NeatStr(majorTickAxesPos[i], 4, 1000, 1);
+            std::string text;
+
+            switch (axesDirection) {
+            case X_AXES_TOP:
+            case X_AXES_BOTTOM:
+            case X_AXES_CENTRE: {
+                text = value2NeatStr(majorTickAxesPos[i], 4, 10000, 0);
+                break;
+            }
+            case Y_AXES_LEFT:
+            case Y_AXES_RIGHT:
+            case Y_AXES_CENTRE: {
+                text = value2NeatStr(majorTickAxesPos[i], 4, 10000, 1);
+                break;
+            }
+            default: {
+                std::cout << "Invalid Axes Direction!" << std::endl;
+            }
+            }
             // Check that the label should not be the zero label
             if ((axesDirection != X_AXES_CENTRE && axesDirection != Y_AXES_CENTRE) || text != "0.00") {
                 // Create text string

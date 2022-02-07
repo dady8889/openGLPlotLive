@@ -119,7 +119,9 @@ namespace GLPL {
         void setAttachLocation(AttachLocation newAttachLocation);
         void setVisible(bool isVisible);
         bool getVisible();
+
         virtual void setOffset(int left, int right, int top, int bottom);
+        glm::vec4 getOffset();
 
     protected:
         // Dimensions
@@ -178,7 +180,6 @@ namespace GLPL {
         void sortChildren();
         static bool compareZDepthValue(const std::shared_ptr<IDrawable>& left, const std::shared_ptr<IDrawable>& right);
         std::array<float, 2> generateXYPositionFromPin();
-
     };
 }
 

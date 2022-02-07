@@ -40,10 +40,10 @@ namespace GLPL {
 
         // Add Axes Label
         AxesArea::addText("x label", "x-label", 0.5, 0, 12, CENTRE_TOP)
-            ->setOffset(0, 0, 8, 0);
+            ->setOffset(0, 0, 10, 0);
 
         AxesArea::addText("y label", "y-label", 0, 0.5, 12, CENTRE_RIGHT)
-            ->setOffset(0, 7, 0, 0);
+            ->setOffset(0, 15, 0, 0);
 
         // Add Buttons
         const float buttonWidth = 45;
@@ -1177,6 +1177,7 @@ namespace GLPL {
     void GLPL::AxesArea::createGrid() {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
+
         // Create grid
         grid = std::make_shared<Grid>(newParentPointers);
         // Register Children

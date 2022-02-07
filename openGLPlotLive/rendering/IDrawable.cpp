@@ -502,3 +502,8 @@ void GLPL::IDrawable::setOffset(int left, int right, int top, int bottom)
     // Update Children
     updateChildren();
 }
+
+glm::vec4 GLPL::IDrawable::getOffset()
+{
+    return offsetsPx;
+}

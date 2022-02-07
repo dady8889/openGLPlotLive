@@ -50,6 +50,8 @@ namespace GLPL {
         void Draw();
         std::string getID();
 
+        void setOffset(int left, int right, int top, int bottom) override;
+
     private:
         // Functions
         void createAxesArea();

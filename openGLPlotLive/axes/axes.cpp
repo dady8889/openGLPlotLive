@@ -153,4 +153,10 @@ namespace GLPL {
     void Axes::showTitle(bool show) {
         axesArea->showTitle(show);
     }
+
+    void Axes::setOffset(int left, int right, int top, int bottom)
+    {
+        IDrawable::setOffset(left, right, top, bottom);
+        //this->axesArea->setOffset(left, right, top, bottom);
+    }
 }
