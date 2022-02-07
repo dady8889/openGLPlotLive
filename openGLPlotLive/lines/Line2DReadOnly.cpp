@@ -3,7 +3,7 @@
 namespace GLPL {
 
 	Line2DReadOnly::Line2DReadOnly(std::shared_ptr<ParentDimensions> parentDimensions, GLenum mode) 
-		: ISingleLine2D(std::move(parentDimensions))
+		: IShadedLine2D(std::move(parentDimensions))
 	{
 		setVisible(false);
 		this->setMode(mode);
@@ -11,7 +11,7 @@ namespace GLPL {
 
 	Line2DReadOnly::Line2DReadOnly(float* dataPtX, float* dataPtY, size_t dataSize,
 		std::shared_ptr<ParentDimensions> parentDimensions,
-		GLenum mode) : ISingleLine2D(std::move(parentDimensions))
+		GLenum mode) : IShadedLine2D(std::move(parentDimensions))
 	{
 		setVisible(false);
 		this->setMode(mode);
@@ -99,6 +99,9 @@ namespace GLPL {
 		}
 
 		// Draw plot
+		//if (isSelected())
+		//	drawData(m_dataSize, true);
+
 		drawData(m_dataSize, selected);
 	}
 

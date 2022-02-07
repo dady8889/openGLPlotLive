@@ -1,9 +1,10 @@
 #pragma once
 
 #include "ISingleLine2D.h"
+#include "../shadedLines/IShadedLine2D.h"
 
 namespace GLPL {
-	class Line2DReadOnly : public ISingleLine2D {
+	class Line2DReadOnly : public IShadedLine2D {
 		// Two arrays corresponding to x values and y values
 		// The owner of the arrays is responsible for allocation and updating.
 	public:
