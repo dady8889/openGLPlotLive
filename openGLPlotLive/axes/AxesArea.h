@@ -83,6 +83,8 @@ namespace GLPL {
                                  int newParentWidthPx,
                                  int newParentHeightPx);
         void setParentDimensions(std::shared_ptr<ParentDimensions> parentDimensions);
+        void updateAxesLimits();
+        void resetAxesLimits();
 
 
     private:
@@ -140,7 +142,7 @@ namespace GLPL {
         void refreshGrid();
         void updateInteractor();
         void updateZoomDragBox();
-        void updateAxesLimits();
+        
         std::pair<float, float> calcScrolledVals(float minVal, float maxVal, float currVal, float zoomFrac, bool dir);
         void zoomAxes(float zoomDir);
         void zoomAxesByDragging();

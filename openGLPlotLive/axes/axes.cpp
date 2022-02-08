@@ -159,4 +159,9 @@ namespace GLPL {
         IDrawable::setOffset(left, right, top, bottom);
         //this->axesArea->setOffset(left, right, top, bottom);
     }
+
+    void Axes::resetAxes()
+    {
+        this->axesArea->resetAxesLimits();
+    }
 }

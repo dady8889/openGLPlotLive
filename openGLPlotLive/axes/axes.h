@@ -51,6 +51,7 @@ namespace GLPL {
         std::string getID();
 
         void setOffset(int left, int right, int top, int bottom) override;
+        void resetAxes();
 
     private:
         // Functions

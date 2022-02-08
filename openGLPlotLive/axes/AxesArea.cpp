@@ -211,7 +211,7 @@ namespace GLPL {
         }
 
         // On Release, set the current axes limits to that of the zoom box line
-        if (!dragging) {
+        if (!dragging && zoomBoxX.size() > 1 && zoomBoxY.size() > 1) {
             float newXMin = std::min(zoomBoxX[0], zoomBoxX[1]);
             float newXMax = std::max(zoomBoxX[0], zoomBoxX[1]);
             float newYMin = std::min(zoomBoxY[0], zoomBoxY[2]);
@@ -941,48 +941,7 @@ namespace GLPL {
 
     void GLPL::AxesArea::updateAxesLimits() {
         if (buttonMap["Axes Limits Scaling"]->isActive()) {
-            // Get the overall maximum and minimum from all lines
-            constexpr float maxFloat = std::numeric_limits<float>::max();
-            float newXmin = maxFloat;
-            float newXmax = -maxFloat;
-            float newYmin = maxFloat;
-            float newYmax = -maxFloat;
-
-            if (axesLines.at("x")->getLogState()) {
-                newXmin = 1.0;
-                newXmax = 1.0;
-            }
-            if (axesLines.at("y")->getLogState()) {
-                newYmin = 1.0;
-                newYmax = 1.0;
-            }
-
-            for (std::pair<unsigned int, std::shared_ptr<Plotable>> lineInfo : plotableMap) {
-                if (lineInfo.first < 2) {
-                    // first plotable is the interactor, second is the zoom box.
-                    // zoombox inserts into the data vectors a zero point, which we need to ignore
-                    // to calculate axis limits correctly.
-                    continue;
-                }
-
-                std::vector<float> minMax = lineInfo.second->getMinMax(true);
-                if (minMax.size() == 4) {
-                    if (minMax[0] < newXmin) { newXmin = minMax[0]; };
-                    if (minMax[1] > newXmax) { newXmax = minMax[1]; };
-                    if (minMax[2] < newYmin) { newYmin = minMax[2]; };
-                    if (minMax[3] > newYmax) { newYmax = minMax[3]; };
-                }
-            }
-
-            // Set axes limits
-            const float absLim = 1e-10;
-            if ((abs(xmin - newXmin) > absLim) ||
-                (abs(xmax - newXmax) > absLim) ||
-                (abs(ymin - newYmin) > absLim) ||
-                (abs(ymax - newYmax) > absLim)) {
-                AxesArea::setAxesLimits(newXmin, newXmax, newYmin, newYmax);
-            }
-
+            resetAxesLimits();
         }
 
         // Match axes lines sizing
@@ -993,6 +952,51 @@ namespace GLPL {
             axesLines.at("y")->setMajorTickFontSize(minFontSize);
         } else if (yFontSize < xFontSize) {
             axesLines.at("x")->setMajorTickFontSize(minFontSize);
+        }
+    }
+
+    void AxesArea::resetAxesLimits()
+    {
+        // Get the overall maximum and minimum from all lines
+        constexpr float maxFloat = std::numeric_limits<float>::max();
+        float newXmin = maxFloat;
+        float newXmax = -maxFloat;
+        float newYmin = maxFloat;
+        float newYmax = -maxFloat;
+
+        if (axesLines.at("x")->getLogState()) {
+            newXmin = 1.0;
+            newXmax = 1.0;
+        }
+        if (axesLines.at("y")->getLogState()) {
+            newYmin = 1.0;
+            newYmax = 1.0;
+        }
+
+        for (std::pair<unsigned int, std::shared_ptr<Plotable>> lineInfo : plotableMap) {
+            if (lineInfo.first < 2) {
+                // first plotable is the interactor, second is the zoom box.
+                // zoombox inserts into the data vectors a zero point, which we need to ignore
+                // to calculate axis limits correctly.
+                continue;
+            }
+
+            std::vector<float> minMax = lineInfo.second->getMinMax(true);
+            if (minMax.size() == 4) {
+                if (minMax[0] < newXmin) { newXmin = minMax[0]; };
+                if (minMax[1] > newXmax) { newXmax = minMax[1]; };
+                if (minMax[2] < newYmin) { newYmin = minMax[2]; };
+                if (minMax[3] > newYmax) { newYmax = minMax[3]; };
+            }
+        }
+
+        // Set axes limits
+        const float absLim = 1e-10;
+        if ((abs(xmin - newXmin) > absLim) ||
+            (abs(xmax - newXmax) > absLim) ||
+            (abs(ymin - newYmin) > absLim) ||
+            (abs(ymax - newYmax) > absLim)) {
+            AxesArea::setAxesLimits(newXmin, newXmax, newYmin, newYmax);
         }
     }
 
@@ -1136,10 +1140,10 @@ namespace GLPL {
         float xRatio = xDiff / xRange;
         float yRatio = yDiff / yRange;
 
-        float newXMin = xMinDrag + (xRatio * xRange);
-        float newXMax = xMaxDrag + (xRatio * xRange);
-        float newYMin = yMinDrag + (yRatio * yRange);
-        float newYMax = yMaxDrag + (yRatio * yRange);
+        float newXMin = xMinDrag - (xRatio * xRange);
+        float newXMax = xMaxDrag - (xRatio * xRange);
+        float newYMin = yMinDrag - (yRatio * yRange);
+        float newYMax = yMaxDrag - (yRatio * yRange);
 
 
         AxesArea::setAxesLimits(newXMin, newXMax, newYMin, newYMax);
