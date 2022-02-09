@@ -325,7 +325,7 @@ namespace GLPL {
         return xyVec;
     }
 
-    std::shared_ptr<ILine2D> AxesArea::addFastLine(LineType lineType, glm::vec3 colour, float opacityRatio)
+    std::shared_ptr<ILine2D> AxesArea::addFastLine(glm::vec3 colour, float opacityRatio)
     {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
@@ -359,7 +359,7 @@ namespace GLPL {
     }
 
     std::shared_ptr<ILine2D> GLPL::AxesArea::addFastLine(float* dataPtX, float* dataPtY, size_t dataSize,
-        LineType lineType, glm::vec3 colour, float opacityRatio)
+        glm::vec3 colour, float opacityRatio)
     {
         // Create Parent Dimensions
         std::shared_ptr<ParentDimensions> newParentPointers = IDrawable::createParentDimensions();
@@ -980,6 +980,10 @@ namespace GLPL {
                 // to calculate axis limits correctly.
                 continue;
             }
+
+            // ignore hidden series
+            if (!lineInfo.second->getVisible())
+                continue;
 
             std::vector<float> minMax = lineInfo.second->getMinMax(true);
             if (minMax.size() == 4) {
