@@ -109,16 +109,22 @@ namespace GLPL {
         // Calculate the number of em squares for the total text size
         auto emSquareSize = (double)characterLoader->getEmSquareSize();
         double emWidth = textFontDimensions.width / emSquareSize;
-        double emHeight = (textFontDimensions.height) / emSquareSize;
+        double emHeight = textFontDimensions.height / emSquareSize;
 
         // Calculate the size of the text in pixels
-        float xScaleDpi = this->shaderSetPt->getXDpiScaling();
-        float yScaleDpi = this->shaderSetPt->getYDpiScaling();
-        auto pixelWidth = (float)(pixelPerEm[0] * emWidth / xScaleDpi);
-        auto pixelHeight = (float)(pixelPerEm[1] * emHeight / yScaleDpi);
+        auto pixelWidth = (float)(pixelPerEm[0] * emWidth);
+        auto pixelHeight = (float)(pixelPerEm[1] * emHeight);
 
-        int offsetX = offsetsPx[0] + offsetsPx[1];
-        int offsetY = offsetsPx[2] + offsetsPx[3];
+        // DPI awareness
+        double xscale = 1, yscale = 1;
+
+        if (this->shaderSetPt != nullptr) {
+            xscale = this->shaderSetPt->getXDpiScaling();
+            yscale = this->shaderSetPt->getYDpiScaling();
+        }
+
+        int offsetX = (offsetsPx[0] + offsetsPx[1]) * xscale;
+        int offsetY = (offsetsPx[2] + offsetsPx[3]) * yscale;
 
         switch (textRotation) {
             case HORIZONTAL:
@@ -397,9 +403,9 @@ namespace GLPL {
             glBindVertexArray(0);
         }
 
-        if (isSelected()) {
-            drawMouseOverBox();
-        }
+        //if (isSelected()) {
+        //    drawMouseOverBox();
+        //}
     }
 
 }

@@ -378,16 +378,24 @@ void GLPL::IDrawable::updateTransforms() {
     // Calculate static offsets
     float offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
 
+    // DPI awareness
+    double xscale = 1, yscale = 1;
+
+    if (this->shaderSetPt != nullptr) {
+        xscale = this->shaderSetPt->getXDpiScaling();
+        yscale = this->shaderSetPt->getYDpiScaling();
+    }
+
     if (parentWidthPx > 0)
     {
-        offsetLeft = offsetsPx[0] / (float)parentWidthPx;
-        offsetRight = offsetsPx[1] / (float)parentWidthPx;
+        offsetLeft = offsetsPx[0] / (float)parentWidthPx * xscale;
+        offsetRight = offsetsPx[1] / (float)parentWidthPx * xscale;
     }
 
     if (parentHeightPx > 0)
     {
-        offsetTop = offsetsPx[2] / (float)parentHeightPx;
-        offsetBottom = offsetsPx[3] / (float)parentHeightPx;
+        offsetTop = offsetsPx[2] / (float)parentHeightPx * yscale;
+        offsetBottom = offsetsPx[3] / (float)parentHeightPx * yscale;
     }
 
     offsetsLocal = glm::vec4(offsetLeft, offsetRight, offsetTop, offsetBottom);

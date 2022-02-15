@@ -139,8 +139,16 @@ namespace GLPL {
 
     void PressButton::setOffset(int left, int right, int top, int bottom)
     {
+        // DPI awareness
+        double xscale = 1, yscale = 1;
+
+        if (this->shaderSetPt != nullptr) {
+            xscale = this->shaderSetPt->getXDpiScaling();
+            yscale = this->shaderSetPt->getYDpiScaling();
+        }
+
         offsetsPx = glm::vec4(left, right, top, bottom);
-        ConstantXYDrawable::setSize(widthPx + left + right, heightPx + top + bottom);
+        ConstantXYDrawable::setSize((widthPx + left + right) * xscale, (heightPx + top + bottom) * yscale);
 
         updatePositionPx();
         updateSizePx();
