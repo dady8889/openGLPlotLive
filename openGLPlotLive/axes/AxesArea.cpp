@@ -1202,8 +1202,8 @@ namespace GLPL {
         // Create Line
         zoomBoxLine = std::make_shared<Line2D2Vecs>(&zoomBoxX, &zoomBoxY, newParentPointers);
         // Set Properties
-        zoomBoxLine->setLineColour(glm::vec3(0.0f, 1.0f, 0.0f));
-        zoomBoxLine->setLineWidth(2);
+        zoomBoxLine->setLineColour(glm::vec3(0.7f, 0.7f, 0.7f));
+        zoomBoxLine->setLineWidth(4);
         // Register Children
         AxesArea::registerChild(zoomBoxLine);
         // Set axes area transform
