@@ -676,6 +676,11 @@ namespace GLPL {
 
         // Handle selection
         if (!newHoverableObjs->empty()) {
+            if (selected != nullptr && !selected->isHovered()) {
+                selected->setSelected(false);
+                selected = nullptr;
+            }
+
             if (selected == nullptr) {
                 // Select first object in list
                 newHoverableObjs.get()[0][0]->setSelected(true);
