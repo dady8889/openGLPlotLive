@@ -102,7 +102,8 @@ namespace GLPL {
 		//if (isSelected())
 		//	drawData(m_dataSize, true);
 
-		drawData(m_dataSize, selected);
+		if (getVisible())
+			drawData(m_dataSize, selected);
 	}
 
 	std::string Line2DReadOnly::getID() {
