@@ -37,4 +37,13 @@ namespace GLPL {
         return 0;
     }
 
+	bool GLPL::ILine2D::getTemporary()
+	{
+		return this->temporary;
+	}
+
+	void GLPL::ILine2D::setTemporary(bool value)
+	{
+		this->temporary = value;
+	}
 }

@@ -83,6 +83,19 @@ namespace GLPL {
     }
 
     void AxesArea::Draw() {
+
+		// Remove temporary items
+		std::vector<int> indices;
+		for(auto & i : plotableMap) {
+			auto line = (ILine2D*)(i.second.get());
+			if (line != nullptr && line->getTemporary())
+				indices.push_back(i.first);
+		}
+
+		for (int i : indices) {
+			removePlotable(i);
+		}
+
         // Update Axes Limits
         AxesArea::updateAxesLimits();
 
@@ -133,7 +146,6 @@ namespace GLPL {
         if (buttonMap["AxesBox"]->isActive()) {
             AxesArea::drawAxesBox();
         }
-
     }
 
     void AxesArea::onScroll(double xoffset, double yoffset) {

@@ -24,6 +24,9 @@ namespace GLPL {
         void setOpacityRatio(float newOpacityRatio);
         int getHoverCursor() override;
 
+		bool getTemporary();
+		void setTemporary(bool value); // set if this line should be deleted after drawing
+
         virtual std::vector<float> getMinMax(bool onlyPositiveX, bool onlyPositiveY) = 0;
 
     protected:
@@ -32,6 +35,7 @@ namespace GLPL {
         glm::vec3 colour = LC_WHITE;
         GLenum mode; // Mode, line or points
         float opacityRatio = 1.0;
+		bool temporary = false;
     };
 }
 
