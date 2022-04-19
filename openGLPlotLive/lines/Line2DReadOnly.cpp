@@ -19,12 +19,23 @@ namespace GLPL {
 	}
 
 	Line2DReadOnly::~Line2DReadOnly() {
+		glBindVertexArray(lineVAO);
+		glDeleteBuffers(1, &lineVBO);
+		glDeleteBuffers(1, &lineEBO);
+		glBindVertexArray(0);
+		glDeleteVertexArrays(1, &lineVAO);
 	}
 
 	void Line2DReadOnly::clearBuffer()
 	{
 		m_clear = true;
 		setVisible(false);
+
+		m_dataPtX = nullptr;
+		m_dataPtY = nullptr;
+
+		internalData.clear();
+		internalIndices.clear();
 	}
 
 	void GLPL::Line2DReadOnly::setSourceArrays(float* xArray, float* yArray, size_t dataSize)
